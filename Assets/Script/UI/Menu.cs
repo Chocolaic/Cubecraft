@@ -54,8 +54,6 @@ public class Menu : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(y, x, 0);
             distance = Mathf.SmoothDamp(distance, targetDistance, ref zoomVelocity, 0.5f);
 
-            // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-            // apply
             Vector3 position = rotation * new Vector3(0.0f, 0.0f, -distance) + camFocus.transform.position + pivotOffset;
             camera.transform.rotation = rotation;
             camera.transform.position = position;

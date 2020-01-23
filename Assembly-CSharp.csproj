@@ -67,7 +67,11 @@
     <Compile Include="Assets\Script\Map\Block\Block.cs" />
     <Compile Include="Assets\Script\Map\Block\BlockType.cs" />
     <Compile Include="Assets\Script\Map\Block\NormalBlock.cs" />
+    <Compile Include="Assets\Script\Map\MapLoader.cs" />
+    <Compile Include="Assets\Script\Map\MapManager.cs" />
     <Compile Include="Assets\Script\UI\Menu.cs" />
+    <Compile Include="Assets\Script\UI\ServerItem.cs" />
+    <Compile Include="Assets\Script\UI\ServerList.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/Project/Unity/Cubecraft/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
