@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class Menu : MonoBehaviour
 {
     [SerializeField]
-    public GameObject camera, camFocus;
+    public GameObject maincamera, camFocus;
 
     public Vector3 pivotOffset = Vector3.zero; // offset from target's pivot
     public Transform target; // like a selected object (used with checking if objects between cam and target)
@@ -30,6 +30,7 @@ public class Menu : MonoBehaviour
     public void BtnOffline_Click()
     {
         Debug.Log("OfflineMode");
+        SceneManager.LoadSceneAsync("MapInstance");
     }
     public void BtnOnline_Click()
     {
@@ -37,6 +38,10 @@ public class Menu : MonoBehaviour
         SceneManager.LoadSceneAsync("ServerList");
     }
 
+    public void BtnExit_Click()
+    {
+        Application.Quit();
+    }
 
     void Start()
     {
@@ -55,8 +60,8 @@ public class Menu : MonoBehaviour
             distance = Mathf.SmoothDamp(distance, targetDistance, ref zoomVelocity, 0.5f);
 
             Vector3 position = rotation * new Vector3(0.0f, 0.0f, -distance) + camFocus.transform.position + pivotOffset;
-            camera.transform.rotation = rotation;
-            camera.transform.position = position;
+            maincamera.transform.rotation = rotation;
+            maincamera.transform.position = position;
 
         }
     }

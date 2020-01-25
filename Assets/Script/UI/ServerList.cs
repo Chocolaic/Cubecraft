@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ServerList : MonoBehaviour
@@ -10,34 +11,49 @@ public class ServerList : MonoBehaviour
     public GameObject content;
     public GameObject preItem;
 
+    private Servers save;
     public void BtnConfirm_Click()
     {
         string host = GameObject.Find("host").GetComponent<Text>().text;
-        AddServer(host);
+        InputCompleted(host);
     }
     // Start is called before the first frame update
     void Start()
     {
+        save = Manager.LoadData<Servers>("servers");
+        foreach(string node in save.List)
+        {
+            AddServer(node);
+        }
         serverbox.SetActive(false);
     }
-
-    // Update is called once per frame
-    void Update()
+    public void InputCompleted(string host)
     {
-        
+        save.List.Add(host);
+        Manager.SaveData("servers", save);
+        AddServer(host);
     }
-
-    public void AddServer(string host)
+    private void AddServer(string host)
     {
         serverbox.SetActive(false);
-        Debug.Log(host);
         GameObject item = Instantiate(preItem);
         item.transform.SetParent(content.transform);
         RectTransform transform = item.GetComponent<RectTransform>();
-        //Debug.Log(posY);
         transform.offsetMax = new Vector2(0, 200);
         transform.offsetMin = new Vector2(-1800, 0);
-        item.GetComponent<ServerItem>().GetInfo(host);
-        //transform.anchoredPosition = new Vector2(0, posY);
+        item.GetComponent<ServerItem>().SetInfo(host);
+
+    }
+
+    public void RemoveServer(GameObject item)
+    {
+        save.List.Remove(item.GetComponent<ServerItem>().host);
+        Destroy(item);
+        Manager.SaveData("servers", save);
+    }
+
+    public void ToMenu()
+    {
+        SceneManager.LoadSceneAsync("Menu");
     }
 }

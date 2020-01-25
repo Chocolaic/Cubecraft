@@ -35,7 +35,7 @@ public class MapLoader : MapManager
 
     Block LoadBlock(string name)
     {
-        return Resources.Load<Block>("prefabs/" + name);
+        return Resources.Load<Block>("prefabs/blocks/" + name);
     }
 
     public void CreaterNewWorld()
@@ -67,13 +67,13 @@ public class MapLoader : MapManager
                 {
                     b = SetBlock(BlockType.Grass, new Vector3(i, y, j));
                 }
-                else if (y1 > maxHeight * 0.2f)
-                {
-                    b = SetBlock(BlockType.Dirt, new Vector3(i, y, j));
-                }
                 else if (y1 > maxHeight * 0.1f)
                 {
                     b = SetBlock(BlockType.Stone, new Vector3(i, y, j));
+                }
+                else
+                {
+                    b = SetBlock(BlockType.Dirt, new Vector3(i, y, j));
                 }
                 float xSample = (b.transform.localPosition.x + seedX) / relief;
                 float zSample = (b.transform.localPosition.z + seedZ) / relief;
@@ -84,5 +84,8 @@ public class MapLoader : MapManager
                 b.transform.localPosition = new Vector3(b.transform.localPosition.x, y, b.transform.localPosition.z);
             }
         }
+        GameObject p = Instantiate(player);
+        p.transform.position = new Vector3(size / 2, 20, size / 2);
+        Debug.Log("completed");
     }
 }
