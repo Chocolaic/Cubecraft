@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
     [SerializeField]
-    public GameObject maincamera, camFocus;
+    public GameObject maincamera, camFocus, nameBox;
 
     public Vector3 pivotOffset = Vector3.zero; // offset from target's pivot
     public Transform target; // like a selected object (used with checking if objects between cam and target)
@@ -30,11 +31,13 @@ public class Menu : MonoBehaviour
     public void BtnOffline_Click()
     {
         Debug.Log("OfflineMode");
+        Global.state = false;
         SceneManager.LoadSceneAsync("MapInstance");
     }
     public void BtnOnline_Click()
     {
         Debug.Log("OnlineMode");
+        Global.state = true;
         SceneManager.LoadSceneAsync("ServerList");
     }
 
@@ -48,6 +51,12 @@ public class Menu : MonoBehaviour
         var angles = transform.eulerAngles;
         targetX = x = angles.x;
         targetDistance = distance;
+        if (File.Exists(Application.persistentDataPath + "/session"))
+        {
+            Global.sessionToken = Manager.LoadData<SessionToken>("session"); 
+        }
+        else
+            nameBox.SetActive(true);
     }
 
     void LateUpdate()

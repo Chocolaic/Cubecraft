@@ -12,7 +12,7 @@ namespace Cubecraft.Net.Crypto.Streams
     /// This is the regular AesStream class used with the regular .NET framework from Microsoft.
     /// </summary>
 
-    public class RegularAesStream : Stream, IAesStream
+    public class RegularAesStream : Stream
     {
         CryptoStream enc;
         CryptoStream dec;

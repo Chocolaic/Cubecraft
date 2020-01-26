@@ -14,7 +14,7 @@ public class ServerList : MonoBehaviour
     private Servers save;
     public void BtnConfirm_Click()
     {
-        string host = GameObject.Find("host").GetComponent<Text>().text;
+        string host = GameObject.Find("input_host").GetComponent<InputField>().text;
         InputCompleted(host);
     }
     // Start is called before the first frame update

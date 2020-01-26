@@ -199,7 +199,7 @@ namespace Cubecraft.Net.Crypto
         /// <param name="AesKey">Key to use</param>
         /// <returns>Return an appropriate stream depending on the framework being used</returns>
 
-        public static IAesStream getAesStream(Stream underlyingStream, byte[] AesKey)
+        public static Stream getAesStream(Stream underlyingStream, byte[] AesKey)
         {
             return new Streams.MonoAesStream(underlyingStream, AesKey);
         }

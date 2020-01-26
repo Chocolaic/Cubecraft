@@ -19,6 +19,6 @@
 
     public static string Set(string code, string text)
     {
-        return string.Format(code, text);
+        return string.IsNullOrEmpty(code) ? text : string.Format(code, text);
     }
 }

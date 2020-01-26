@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -13,6 +14,7 @@ public class ServerItem : MonoBehaviour
     private Text Status;
 
     public string host;
+    public int protocol = Protocol.MC112Version;
     public string status = "<color=#3AB3DA>正在连接服务器...</color>";
     public void SetInfo(string host)
     {
@@ -22,23 +24,35 @@ public class ServerItem : MonoBehaviour
     }
     private void DoPing(string server)
     {
-        string[] sip = server.Replace("：", ":").Split(':');
-        string host = sip[0];
         ushort port = 25565;
-        if (sip.Length > 1)
-            port = ushort.Parse(sip[1]);
-        else
-            ProtocolHandler.MinecraftServiceLookup(ref host, ref port);
-
-        CubeProtocol protocol = new CubeProtocol(CubeProtocol.MC18Version);
-        protocol.GetServerInfo(host, port, (string result) => {
-            Debug.Log(result);
+        GetServerAddr(ref server, ref port);
+        CubeProtocol.GetServerInfo(server, port, (Cubecraft.Net.Templates.StatusInfo result) => {
             if (result != null)
             {
                 status = ColorUtility.Set(ColorUtility.Green, "-ONLINE-");
             }else
                 status = ColorUtility.Set(ColorUtility.Red, "-OFFLINE-");
         });
+    }
+    public void EnterServer()
+    {
+        string server = this.host;
+        ushort port = 25565;
+        GetServerAddr(ref server, ref port);
+        SceneManager.LoadSceneAsync("MapInstance");
+        Global.currentServerHost = server;
+        Global.currentServerPort = port;
+        Global.protocolVersion = protocol;
+    }
+    private void GetServerAddr(ref string server, ref ushort port)
+    {
+        string[] sip = server.Replace("：", ":").Split(':');
+        server = sip[0];
+        port = 25565;
+        if (sip.Length > 1)
+            port = ushort.Parse(sip[1]);
+        else
+            ProtocolHandler.MinecraftServiceLookup(ref server, ref port);
     }
     void Start()
     {

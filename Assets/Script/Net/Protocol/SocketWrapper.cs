@@ -1,5 +1,6 @@
 ﻿using Cubecraft.Net.Crypto;
 using System;
+using System.IO;
 using System.Net.Sockets;
 
 namespace Cubecraft.Net.Protocol
@@ -10,7 +11,7 @@ namespace Cubecraft.Net.Protocol
     class SocketWrapper
     {
         TcpClient c;
-        IAesStream s;
+        Stream s;
         bool encrypted = false;
 
         /// <summary>
@@ -20,6 +21,7 @@ namespace Cubecraft.Net.Protocol
         public SocketWrapper(TcpClient client)
         {
             this.c = client;
+            this.s = client.GetStream();
         }
         public SocketWrapper(string host, int port) : this(new TcpClient(host, port) { ReceiveBufferSize = 1024 * 1024 }) { }
 
@@ -57,16 +59,12 @@ namespace Cubecraft.Net.Protocol
         /// <summary>
         /// Network reading method. Read bytes from the socket or encrypted socket.
         /// </summary>
-        private void Receive(byte[] buffer, int start, int offset, SocketFlags f)
+        private void Receive(byte[] buffer, int start, int offset)
         {
             int read = 0;
             while (read < offset)
             {
-                if (encrypted)
-                {
-                    read += s.Read(buffer, start + read, offset - read);
-                }
-                else read += c.Client.Receive(buffer, start + read, offset - read, f);
+                read += s.Read(buffer, start + read, offset - read);
             }
         }
 
@@ -80,25 +78,27 @@ namespace Cubecraft.Net.Protocol
             if (length > 0)
             {
                 byte[] cache = new byte[length];
-                Receive(cache, 0, length, SocketFlags.None);
+                Receive(cache, 0, length);
                 return cache;
             }
             return new byte[] { };
         }
-
         /// <summary>
         /// Send raw data to the server.
         /// </summary>
         /// <param name="buffer">data to send</param>
         public void SendDataRAW(byte[] buffer)
         {
-            if (encrypted)
-            {
-                s.Write(buffer, 0, buffer.Length);
-            }
-            else c.Client.Send(buffer);
+            s.Write(buffer, 0, buffer.Length);
         }
-
+        /// <summary>
+        /// Get the Stream
+        /// </summary>
+        /// <returns></returns>
+        public Stream GetStream()
+        {
+            return this.s;
+        }
         /// <summary>
         /// Disconnect from the server
         /// </summary>
@@ -109,7 +109,7 @@ namespace Cubecraft.Net.Protocol
                 c.Close();
             }
             catch (SocketException) { }
-            catch (System.IO.IOException) { }
+            catch (IOException) { }
             catch (NullReferenceException) { }
             catch (ObjectDisposedException) { }
         }

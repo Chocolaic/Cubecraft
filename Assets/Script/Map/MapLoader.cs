@@ -17,7 +17,8 @@ public class MapLoader : MapManager
     void Start()
     {
         RegisterAll();
-        CreaterNewWorld();
+        if(!Global.state)
+            CreaterNewWorld();
     }
 
     // Update is called once per frame
@@ -46,10 +47,7 @@ public class MapLoader : MapManager
         /*==============*/
         world.execute(me);
         /*===============*/
-    }
 
-    void execute(GameObject player)
-    {
         float y = 0;
         float y1 = 0;
         for (int i = 0; i < this.size; i++)
@@ -69,11 +67,11 @@ public class MapLoader : MapManager
                 }
                 else if (y1 > maxHeight * 0.1f)
                 {
-                    b = SetBlock(BlockType.Stone, new Vector3(i, y, j));
+                    b = SetBlock(BlockType.Dirt, new Vector3(i, y, j));
                 }
                 else
                 {
-                    b = SetBlock(BlockType.Dirt, new Vector3(i, y, j));
+                    b = SetBlock(BlockType.Stone, new Vector3(i, y, j));
                 }
                 float xSample = (b.transform.localPosition.x + seedX) / relief;
                 float zSample = (b.transform.localPosition.z + seedZ) / relief;
@@ -87,5 +85,10 @@ public class MapLoader : MapManager
         GameObject p = Instantiate(player);
         p.transform.position = new Vector3(size / 2, 20, size / 2);
         Debug.Log("completed");
+    }
+
+    void execute(GameObject player)
+    {
+        GameObject.Find("Main Camera").SetActive(false);
     }
 }

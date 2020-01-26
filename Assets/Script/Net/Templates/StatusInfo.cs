@@ -8,18 +8,18 @@ namespace Cubecraft.Net.Templates
 {
     public class StatusInfo
     {
-        public Version version { get; set; }
-        public Players players { get; set; }
-        public Description description { get; set; }
+        public Version version;
+        public Players players;
+        public Description description;
         public class Version
         {
-            public string name { get; set; }
-            public int protocol { get; set; }
+            public string name;
+            public int protocol;
         }
         public class Players
         {
-            public int max { get; set; }
-            public int online { get; set; }
+            public int max;
+            public int online;
         }
         public class Description
         {

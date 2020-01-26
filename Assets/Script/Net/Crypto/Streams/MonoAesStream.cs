@@ -17,17 +17,17 @@ namespace Cubecraft.Net.Crypto.Streams
     /// This is a mono-compatible adaptation which uses AES engine from the BouncyCastle project.
     /// </summary>
 
-    public class MonoAesStream : Stream, IAesStream
+    public class MonoAesStream : Stream
     {
         CipherStream cstream;
-        public MonoAesStream(System.IO.Stream stream, byte[] key)
+        public MonoAesStream(Stream stream, byte[] key)
         {
             BaseStream = stream;
             BufferedBlockCipher enc = GenerateAES(key, true);
             BufferedBlockCipher dec = GenerateAES(key, false);
             cstream = new CipherStream(stream, dec, enc);
         }
-        public System.IO.Stream BaseStream { get; set; }
+        public Stream BaseStream { get; set; }
 
         public override bool CanRead
         {
