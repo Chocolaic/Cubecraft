@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cubecraft.Net.Protocol;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,5 @@ class Global
     public static bool state;
     public static string currentServerHost;
     public static int currentServerPort;
-    public static int protocolVersion;
+    public static int protocolVersion = Protocol.MC1122Version;
 }

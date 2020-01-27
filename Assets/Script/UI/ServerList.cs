@@ -37,7 +37,7 @@ public class ServerList : MonoBehaviour
     {
         serverbox.SetActive(false);
         GameObject item = Instantiate(preItem);
-        item.transform.SetParent(content.transform);
+        item.transform.SetParent(content.transform, false);
         RectTransform transform = item.GetComponent<RectTransform>();
         transform.offsetMax = new Vector2(0, 200);
         transform.offsetMin = new Vector2(-1800, 0);

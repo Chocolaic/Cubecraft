@@ -9,5 +9,6 @@ namespace Cubecraft.Net.Protocol
     interface INetworkHandler
     {
         void OnConnectionLost(DisconnectReason reason, string msg);
+        void OnGameJoined();
     }
 }

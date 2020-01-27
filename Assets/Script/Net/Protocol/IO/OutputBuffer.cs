@@ -18,7 +18,7 @@ namespace Cubecraft.Net.Protocol.IO
         }
         public void WriteData(byte[] data, int offset, int len)
         {
-            s.Write(data, 0, len);
+            s.Write(data, offset, len);
         }
         public void WriteByte(byte b)
         {
@@ -57,6 +57,12 @@ namespace Cubecraft.Net.Protocol.IO
             Array.Reverse(theShort); //Endianness
             WriteData(theShort);
         }
+        public void WriteLong(long number)
+        {
+            byte[] theLong = BitConverter.GetBytes(number);
+            Array.Reverse(theLong);
+            WriteData(theLong);
+        }
         public void WriteArray(byte[] array)
         {
             WriteVarInt(array.Length);
@@ -65,6 +71,10 @@ namespace Cubecraft.Net.Protocol.IO
         public Stream GetStream()
         {
             return this.s;
+        }
+        public byte[] ToArray()
+        {
+            return ((MemoryStream)s).ToArray();
         }
 
         public void Dispose()

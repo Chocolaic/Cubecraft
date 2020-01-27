@@ -20,17 +20,14 @@ namespace Cubecraft.Net.Protocol
         /// </summary>
         /// <param name="to_compress">Data to compress</param>
         /// <returns>Compressed data as a byte array</returns>
-        public static byte[] Compress(byte[] to_compress)
+        public static byte[] Compress(byte[] to_compress, MemoryStream memstream)
         {
             byte[] data;
-            using (System.IO.MemoryStream memstream = new System.IO.MemoryStream())
+            using (ZlibStream stream = new ZlibStream(memstream, CompressionMode.Compress))
             {
-                using (ZlibStream stream = new ZlibStream(memstream, CompressionMode.Compress))
-                {
-                    stream.Write(to_compress, 0, to_compress.Length);
-                }
-                data = memstream.ToArray();
+                stream.Write(to_compress, 0, to_compress.Length);
             }
+            data = memstream.ToArray();
             return data;
         }
 
@@ -40,9 +37,9 @@ namespace Cubecraft.Net.Protocol
         /// <param name="to_decompress">Data to decompress</param>
         /// <param name="size_uncompressed">Size of the data once decompressed</param>
         /// <returns>Decompressed data as a byte array</returns>
-        public static Stream Decompress(byte[] to_decompress, int size_uncompressed)
+        public static Stream Decompress(MemoryStream to_decompress, int size_uncompressed)
         {
-            ZlibStream stream = new ZlibStream(new System.IO.MemoryStream(to_decompress, false), CompressionMode.Decompress);
+            ZlibStream stream = new ZlibStream(to_decompress, CompressionMode.Decompress);
             return stream;
         }
 

@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
+using UnityEngine;
 
 namespace Cubecraft.Net.Protocol
 {
@@ -27,6 +28,8 @@ namespace Cubecraft.Net.Protocol
         OutputBuffer writer;
 
         int compression_treshold = 0;
+
+        protected Thread netRead;
         public int ProtocolVersion { get; private set; }
 
         public Protocol(SocketWrapper socket, int protocol)
@@ -53,7 +56,7 @@ namespace Cubecraft.Net.Protocol
         public Packet CreateIncomingPacket(int id)
         {
             if (!this.incoming.ContainsKey(id))
-                throw new KeyNotFoundException();
+                return null;
             return Activator.CreateInstance(this.incoming[id]) as Packet;
         }
         public int GetOutgoingID(Packet packet)
@@ -62,7 +65,11 @@ namespace Cubecraft.Net.Protocol
                 throw new KeyNotFoundException();
             return this.outgoing[packet.GetType()];
         }
-        protected void SendPacket(Packet packet)
+        public void SetCompress(int treshold)
+        {
+            this.compression_treshold = treshold;
+        }
+        public void SendPacket(Packet packet)
         {
             using (MemoryStream stream = new MemoryStream())
             {
@@ -72,50 +79,52 @@ namespace Cubecraft.Net.Protocol
                 if (compression_treshold > 0)
                 {
                     var content = stream.ToArray();
-                    using (outgoing = new OutputBuffer())
+                    outgoing = new OutputBuffer();
+                    if (content.Length >= compression_treshold)
                     {
-                        if (content.Length >= compression_treshold)
-                        {
-                            byte[] compressed_packet = ZlibUtils.Compress(content);
-                            outgoing.WriteVarInt(compressed_packet.Length);
-                            outgoing.WriteData(compressed_packet);
-                        }
-                        else
-                        {
-                            outgoing.WriteVarInt(0);
-                            outgoing.WriteData(content);
-                        }
+                        byte[] compressed_packet = ZlibUtils.Compress(content, (MemoryStream)outgoing.GetStream());
+                        outgoing.WriteVarInt(compressed_packet.Length);
+                        outgoing.WriteData(compressed_packet);
+                    }
+                    else
+                    {
+                        outgoing.WriteVarInt(0);
+                        outgoing.WriteData(content);
                     }
                 }
-                writer.WriteVarInt((int)stream.Length);
-                writer.WriteData(stream.ToArray());
+                writer.WriteVarInt((int)outgoing.GetStream().Length);
+                writer.WriteData(outgoing.ToArray());
+                outgoing.Dispose();
             }
         }
         protected Packet ReadPacket()
         {
             int size = reader.ReadVarInt();
             Packet packet = null;
-            using (MemoryStream stream = new MemoryStream(reader.ReadData(size)))
+            using (MemoryStream stream = new MemoryStream(reader.ReadData(size), false))
             {
                 InputBuffer input = new InputBuffer(stream);
-                if (ProtocolVersion >= MC112Version && compression_treshold > 0)
+                if (ProtocolVersion >= 47 && compression_treshold > 0)
                 {
                     int sizeUncompressed = input.ReadVarInt();
                     if (sizeUncompressed != 0)
                     {
-                        byte[] toDecompress = stream.ToArray();
-                        input = new InputBuffer(ZlibUtils.Decompress(toDecompress, sizeUncompressed));
+                        input = new InputBuffer(ZlibUtils.Decompress(stream, sizeUncompressed));
                     }
                 }
                 int packetID = input.ReadVarInt();
                 packet = CreateIncomingPacket(packetID);
-                packet.Read(input);
+                if (packet != null)
+                    packet.Read(input);
+                input.Dispose();
             }
             return packet;
         }
 
         public void Dispose()
         {
+            if (netRead != null)
+                netRead.Abort();
             socketWrapper.Disconnect();
             ClearPackets();
         }

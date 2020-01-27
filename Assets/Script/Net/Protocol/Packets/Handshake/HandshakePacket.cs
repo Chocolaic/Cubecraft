@@ -22,7 +22,10 @@ namespace Cubecraft.Net.Protocol.Packets
         }
         public override void Read(InputBuffer input)
         {
-            throw new NotImplementedException();
+            this.ProtocolVersion = input.ReadVarInt();
+            this.HostName = input.ReadString();
+            this.Port = (short)input.ReadUShort();
+            this.Intent = input.ReadVarInt();
         }
 
         public override void Write(OutputBuffer output)

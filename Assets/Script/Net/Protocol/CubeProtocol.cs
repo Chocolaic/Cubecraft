@@ -1,11 +1,12 @@
-﻿using Cubecraft.Net.Protocol.IO;
-using Cubecraft.Net.Protocol.Packets;
+﻿using Cubecraft.Net.Protocol.Packets;
 using Cubecraft.Net.Templates;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Cubecraft.Net.Protocol
 {
@@ -15,6 +16,7 @@ namespace Cubecraft.Net.Protocol
         string host;
         int port;
         INetworkHandler handler;
+
         public CubeProtocol(string host, int port, int protocol, INetworkHandler handler) : base(new SocketWrapper(host, port), protocol)
         {
             this.host = host;
@@ -33,8 +35,11 @@ namespace Cubecraft.Net.Protocol
                     initStatus(); break;
                 case SubProtocol.Login:
                     initLogin(); break;
+                case SubProtocol.Game:
+                    initGame(); break;
             }
         }
+        #region
         private void initHandshake()
         {
             RegisterOutgoing<HandshakePacket>(0x00);
@@ -53,6 +58,17 @@ namespace Cubecraft.Net.Protocol
             RegisterIncoming<LoginSuccessPacket>(0x02);
             RegisterIncoming<LoginSetCompressionPacket>(0x03);
         }
+        private void initGame()
+        {
+            RegisterOutgoing<ClientChatPacket>(0x02);
+            RegisterOutgoing<ClientKeepAlivePacket>(0x0B);
+
+            RegisterIncoming<ServerChatPacket>(0x0F);
+            RegisterIncoming<ServerDisconnectPacket>(0x1A);
+            RegisterIncoming<ServerKeepAlivePacket>(0x1F);
+            RegisterIncoming<ServerJoinGamePacket>(0x23);
+        }
+        #endregion
         public void LoginToServer(SessionToken session)
         {
             SetProtocol(SubProtocol.Handshake);
@@ -67,15 +83,43 @@ namespace Cubecraft.Net.Protocol
                 {
                     if(packet.GetType() == typeof(LoginDisconnectPacket))
                     {
-                        UnityEngine.Debug.Log(((LoginDisconnectPacket)packet).RichText);
+                        UnityEngine.Debug.Log(((LoginDisconnectPacket)packet).SourceText);
                         handler.OnConnectionLost(DisconnectReason.LoginRejected, ((LoginDisconnectPacket)packet).RichText);
                         return;
+                    }else if(packet.GetType() == typeof(LoginSuccessPacket))
+                    {
+                        handler.OnGameJoined();
+                        SetProtocol(SubProtocol.Game);
+                        break;
+                    }else if(packet.GetType() == typeof(LoginSetCompressionPacket))
+                    {
+                        SetCompress(((LoginSetCompressionPacket)packet).Threshold);
                     }
                 }
                 else
-                    break;
+                    handler.OnConnectionLost(DisconnectReason.ConnectionLost, ColorUtility.Set(ColorUtility.Red, "与服务器断开连接"));
             }
-            handler.OnConnectionLost(DisconnectReason.ConnectionLost, ColorUtility.Set(ColorUtility.Red, "与服务器断开连接"));
+
+            netRead = new System.Threading.Thread(() => {
+                while (socketWrapper.IsConnected())
+                {
+                    Packet packet = ReadPacket();
+                    if (packet != null)
+                    {
+                        if (packet.GetType() == typeof(ServerKeepAlivePacket))
+                        {
+                            SendPacket(new ClientKeepAlivePacket(((ServerKeepAlivePacket)packet).PingID));
+                        }
+                        else if (packet.GetType() == typeof(ServerDisconnectPacket))
+                            return;
+                        else
+                            incomingQueue.Add(packet);
+                    }
+                }
+                Debug.Log(netRead.Name + " stoped.");
+            });
+            netRead.Name = "PacketHandler";
+            netRead.Start();
         }
 
         public static async void GetServerInfo(string host, int port, StatusCallBack call)
@@ -85,7 +129,7 @@ namespace Cubecraft.Net.Protocol
                 CubeProtocol protocol = null;
                 try
                 {
-                    protocol = new CubeProtocol(host, port, MC112Version, null);
+                    protocol = new CubeProtocol(host, port, MC1122Version, null);
                     protocol.SetProtocol(SubProtocol.Handshake);
                     protocol.SendPacket(new HandshakePacket(protocol.ProtocolVersion, host, (short)port, 1));
                     protocol.SetProtocol(SubProtocol.Status);
@@ -106,6 +150,14 @@ namespace Cubecraft.Net.Protocol
                 }
                 call(null);
             });
+        }
+        public BlockingCollection<Packet> GetIncomingQueue()
+        {
+            return this.incomingQueue;
+        }
+        public BlockingCollection<Packet> GetOutgoingQueue()
+        {
+            return this.outgoingQueue;
         }
     }
 }

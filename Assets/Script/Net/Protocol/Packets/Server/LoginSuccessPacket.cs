@@ -11,7 +11,7 @@ namespace Cubecraft.Net.Protocol.Packets
     {
         public override void Read(InputBuffer input)
         {
-            
+
         }
 
         public override void Write(OutputBuffer output)

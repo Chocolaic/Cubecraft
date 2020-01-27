@@ -106,7 +106,8 @@ namespace Cubecraft.Net.Protocol
         {
             try
             {
-                c.Close();
+                c.Dispose();
+                c = null;
             }
             catch (SocketException) { }
             catch (IOException) { }

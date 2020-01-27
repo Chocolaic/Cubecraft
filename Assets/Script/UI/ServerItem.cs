@@ -14,7 +14,7 @@ public class ServerItem : MonoBehaviour
     private Text Status;
 
     public string host;
-    public int protocol = Protocol.MC112Version;
+    public int protocol;
     public string status = "<color=#3AB3DA>正在连接服务器...</color>";
     public void SetInfo(string host)
     {
@@ -39,10 +39,10 @@ public class ServerItem : MonoBehaviour
         string server = this.host;
         ushort port = 25565;
         GetServerAddr(ref server, ref port);
-        SceneManager.LoadSceneAsync("MapInstance");
         Global.currentServerHost = server;
         Global.currentServerPort = port;
         Global.protocolVersion = protocol;
+        SceneManager.LoadSceneAsync("MapInstance");
     }
     private void GetServerAddr(ref string server, ref ushort port)
     {
@@ -60,6 +60,7 @@ public class ServerItem : MonoBehaviour
         Status = textstatus.GetComponent<Text>();
 
         Host.text = host;
+        protocol = Protocol.MC1122Version;
     }
     void Update()
     {
