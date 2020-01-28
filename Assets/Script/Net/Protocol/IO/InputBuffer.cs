@@ -28,7 +28,10 @@ namespace Cubecraft.Net.Protocol.IO
         }
         public int ReadByte()
         {
-            return s.ReadByte();
+            int b = s.ReadByte();
+            if (b < 0)
+                throw new EndOfStreamException();
+            return b;
         }
         public int ReadVarInt()
         {
@@ -98,7 +101,14 @@ namespace Cubecraft.Net.Protocol.IO
             Array.Reverse(rawValue); //Endianness
             return BitConverter.ToUInt64(rawValue, 0);
         }
-
+        public ulong[] ReadULongArray()
+        {
+            int len = ReadVarInt();
+            ulong[] result = new ulong[len];
+            for (int i = 0; i < len; i++)
+                result[i] = ReadULong();
+            return result;
+        }
         public void Dispose()
         {
             s.Dispose();

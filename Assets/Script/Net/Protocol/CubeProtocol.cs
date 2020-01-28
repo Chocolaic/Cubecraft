@@ -66,6 +66,7 @@ namespace Cubecraft.Net.Protocol
             RegisterIncoming<ServerChatPacket>(0x0F);
             RegisterIncoming<ServerDisconnectPacket>(0x1A);
             RegisterIncoming<ServerKeepAlivePacket>(0x1F);
+            RegisterIncoming<ServerChunkDataPacket>(0x20);
             RegisterIncoming<ServerJoinGamePacket>(0x23);
         }
         #endregion
@@ -83,7 +84,7 @@ namespace Cubecraft.Net.Protocol
                 {
                     if(packet.GetType() == typeof(LoginDisconnectPacket))
                     {
-                        UnityEngine.Debug.Log(((LoginDisconnectPacket)packet).SourceText);
+                        Debug.Log(((LoginDisconnectPacket)packet).SourceText);
                         handler.OnConnectionLost(DisconnectReason.LoginRejected, ((LoginDisconnectPacket)packet).RichText);
                         return;
                     }else if(packet.GetType() == typeof(LoginSuccessPacket))
@@ -107,19 +108,34 @@ namespace Cubecraft.Net.Protocol
                     if (packet != null)
                     {
                         if (packet.GetType() == typeof(ServerKeepAlivePacket))
-                        {
                             SendPacket(new ClientKeepAlivePacket(((ServerKeepAlivePacket)packet).PingID));
-                        }
                         else if (packet.GetType() == typeof(ServerDisconnectPacket))
+                        {
+                            incomingQueue.Add(packet);
                             return;
+                        }
                         else
                             incomingQueue.Add(packet);
                     }
                 }
                 Debug.Log(netRead.Name + " stoped.");
             });
+            netSend = new System.Threading.Thread(() =>
+            {
+                while (socketWrapper.IsConnected())
+                {
+                    Packet packet = GetOutgoingQueue().Take();
+                    if (packet != null)
+                        SendPacket(packet);
+                }
+                Debug.Log(netSend.Name + " stoped.");
+            });
+
             netRead.Name = "PacketHandler";
             netRead.Start();
+            netSend.Name = "PacketSender";
+            netSend.Start();
+
         }
 
         public static async void GetServerInfo(string host, int port, StatusCallBack call)

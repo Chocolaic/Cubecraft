@@ -38,16 +38,16 @@ public class GameManager : MonoBehaviour
         GameObject obj = Instantiate(chatBoxText);
         obj.GetComponent<Text>().text = text;
         obj.transform.SetParent(chatBoxContent.transform);
-        Canvas.ForceUpdateCanvases();
-        chatBox.verticalNormalizedPosition = 0;
-        Canvas.ForceUpdateCanvases();
         chatList.Add(obj);
-        while(chatList.Count > 64)
+        while (chatList.Count > 64)
         {
             GameObject tmp = chatList[0];
             chatList.RemoveAt(0);
             Destroy(tmp);
         }
+        Canvas.ForceUpdateCanvases();
+        chatBox.verticalNormalizedPosition = 0;
+        Canvas.ForceUpdateCanvases();
     }
     public void ChatInputCompleted(string text)
     {

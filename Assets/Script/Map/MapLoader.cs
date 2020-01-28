@@ -29,9 +29,9 @@ public class MapLoader : MapManager
 
     void RegisterAll()
     {
-        RegisterBlock(BlockType.Stone, LoadBlock("block_stone"));
-        RegisterBlock(BlockType.Grass, LoadBlock("block_grass"));
-        RegisterBlock(BlockType.Dirt, LoadBlock("block_dirt"));
+        RegisterBlock(1, LoadBlock("block_stone"));
+        RegisterBlock(2, LoadBlock("block_grass"));
+        RegisterBlock(3, LoadBlock("block_dirt"));
     }
 
     Block LoadBlock(string name)
@@ -63,15 +63,15 @@ public class MapLoader : MapManager
                 Block b = null;
                 if (y1 > maxHeight * 0.3f)
                 {
-                    b = SetBlock(BlockType.Grass, new Vector3(i, y, j));
+                    b = SetBlock(3, new Vector3(i, y, j));
                 }
                 else if (y1 > maxHeight * 0.1f)
                 {
-                    b = SetBlock(BlockType.Dirt, new Vector3(i, y, j));
+                    b = SetBlock(2, new Vector3(i, y, j));
                 }
                 else
                 {
-                    b = SetBlock(BlockType.Stone, new Vector3(i, y, j));
+                    b = SetBlock(1, new Vector3(i, y, j));
                 }
                 float xSample = (b.transform.localPosition.x + seedX) / relief;
                 float zSample = (b.transform.localPosition.z + seedZ) / relief;

@@ -29,7 +29,7 @@ namespace Cubecraft.Net.Protocol
 
         int compression_treshold = 0;
 
-        protected Thread netRead;
+        protected Thread netRead, netSend;
         public int ProtocolVersion { get; private set; }
 
         public Protocol(SocketWrapper socket, int protocol)
@@ -69,7 +69,7 @@ namespace Cubecraft.Net.Protocol
         {
             this.compression_treshold = treshold;
         }
-        public void SendPacket(Packet packet)
+        protected void SendPacket(Packet packet)
         {
             using (MemoryStream stream = new MemoryStream())
             {
@@ -125,6 +125,8 @@ namespace Cubecraft.Net.Protocol
         {
             if (netRead != null)
                 netRead.Abort();
+            if (netSend != null)
+                netSend.Abort();
             socketWrapper.Disconnect();
             ClearPackets();
         }

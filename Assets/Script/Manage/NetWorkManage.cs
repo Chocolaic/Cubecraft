@@ -9,10 +9,15 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
 {
     CubeProtocol protocolHander;
     GameManager gameManager;
+    MapManager mapManager;
     bool isWorking;
+
+    int entityid;
+
     // Start is called before the first frame update
     void Start()
     {
+        mapManager = GameObject.Find("Manager").GetComponent<MapLoader>();
         gameManager = GameObject.Find("Manager").GetComponent<GameManager>();
         gameManager.chatInput.GetComponent<InputField>().onEndEdit.AddListener(ChatInput);
         StartWorking(Global.currentServerHost, Global.currentServerPort, Global.protocolVersion);
@@ -44,6 +49,30 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
             {
                 OnConnectionLost(DisconnectReason.InGameKick, ((ServerDisconnectPacket)packet).RichText);
                 return;
+            }else if(packet.GetType() == typeof(ServerJoinGamePacket))
+            {
+                this.entityid = ((ServerJoinGamePacket)packet).EntityID;
+            }else if(packet.GetType() == typeof(ServerChunkDataPacket))
+            {
+                SetChunkData(((ServerChunkDataPacket)packet).Column);
+            }
+        }
+    }
+    private void SetChunkData(ChunkColumn column)
+    {
+        for(int y = 0; y < 256; y+=16)
+        {
+            ChunkData chunk = column[y];
+            for(int blockY = 0; blockY < ChunkData.SizeY; blockY++)
+            {
+                for (int blockX = 0; blockX < 16; blockX++)
+                {
+                    for (int blockZ = 0; blockZ < 16; blockZ++)
+                    {
+                        AbstractBlock block = (AbstractBlock)chunk[blockX, blockY, blockZ];
+                        mapManager.SetBlock(block.BlockID, new Vector3(column.ChunkX + blockX, y + blockY, column.ChunkZ + blockZ));
+                    }
+                }
             }
         }
     }
@@ -51,7 +80,11 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
     {
         Debug.Log("Input:" + text);
         gameManager.ChatInputCompleted(text);
-        protocolHander.SendPacket(new ClientChatPacket(text));
+        SendPacket(new ClientChatPacket(text));
+    }
+    private void SendPacket(Packet packet)
+    {
+        protocolHander.GetOutgoingQueue().Add(packet);
     }
 
     public void OnConnectionLost(DisconnectReason reason, string msg)

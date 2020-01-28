@@ -2,25 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block : MonoBehaviour
+public class Block : MonoBehaviour, IBlock
 {
-    [SerializeField]
-    public BlockType type;
-    public float hardness;
-    public float blocklight;
-    public int maxheap;
-
+    public int BlockID { get; set; }
     public Vector3 GetPosition()
     {
         return this.gameObject.transform.position;
     }
 
-    public virtual void OnBlockDestroyed()
-    {
 
-    }
-    public virtual void OnBlockInteracted()
-    {
-
-    }
 }
