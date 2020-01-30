@@ -5,38 +5,30 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-public class ChunkColumn
+namespace Cubecraft.Data.World
 {
-    public const int ColumnSize = 16;
+    public class ChunkColumn
+    {
+        public const int ColumnSize = 16;
 
-    public int ChunkX { get; private set; }
-    public int ChunkZ { get; private set; }
-    private readonly ChunkData[] chunks = new ChunkData[ColumnSize];
-    public ChunkData this[int chunkY]
-    {
-        get
+        public int ChunkX { get; private set; }
+        public int ChunkZ { get; private set; }
+        private readonly ChunkData[] chunks = new ChunkData[ColumnSize];
+        public ChunkData this[int chunkY]
         {
-            return chunks[chunkY];
+            get
+            {
+                return chunks[chunkY];
+            }
+            set
+            {
+                chunks[chunkY] = value;
+            }
         }
-        set
+        public ChunkColumn(int x, int z)
         {
-            chunks[chunkY] = value;
+            this.ChunkX = x;
+            this.ChunkZ = z;
         }
-    }
-    public ChunkData GetChunk(Vector3 location)
-    {
-        try
-        {
-            return this[(int)location.Y];
-        }
-        catch (IndexOutOfRangeException)
-        {
-            return null;
-        }
-    }
-    public ChunkColumn(int x, int z)
-    {
-        this.ChunkX = x;
-        this.ChunkZ = z;
     }
 }

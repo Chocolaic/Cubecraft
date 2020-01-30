@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cubecraft.Data.World;
 using Cubecraft.Net.Protocol.IO;
 
 namespace Cubecraft.Net.Protocol.Packets
@@ -17,8 +18,7 @@ namespace Cubecraft.Net.Protocol.Packets
             bool chunksContinuous = input.ReadBool();
             int chunkMask = input.ReadVarInt();
             byte[] data = input.ReadData(input.ReadVarInt());
-
-            this.Column = NetUtils.ReadColumnData(data, x, z, chunksContinuous, false, chunkMask);
+            this.Column = NetUtils.ReadColumnData(data, x, z, chunksContinuous, CubeProtocol.currentDimension == 0, chunkMask);
         }
 
         public override void Write(OutputBuffer output)

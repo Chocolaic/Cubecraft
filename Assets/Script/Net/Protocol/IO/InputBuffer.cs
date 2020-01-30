@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Cubecraft.Net.Protocol.IO
 {
-    class InputBuffer : IDisposable
+    public class InputBuffer : IDisposable
     {
         private Stream s;
         public InputBuffer(Stream s)
@@ -108,6 +108,10 @@ namespace Cubecraft.Net.Protocol.IO
             for (int i = 0; i < len; i++)
                 result[i] = ReadULong();
             return result;
+        }
+        public Stream GetStream()
+        {
+            return this.s;
         }
         public void Dispose()
         {

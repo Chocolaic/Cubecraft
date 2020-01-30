@@ -16,7 +16,7 @@ namespace Cubecraft.Net.Protocol
         string host;
         int port;
         INetworkHandler handler;
-
+        public static int currentDimension;
         public CubeProtocol(string host, int port, int protocol, INetworkHandler handler) : base(new SocketWrapper(host, port), protocol)
         {
             this.host = host;

@@ -1715,8 +1715,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1621074024}
   - component: {fileID: 1621074025}
-  - component: {fileID: 1621074023}
   - component: {fileID: 1621074026}
+  - component: {fileID: 1621074023}
+  - component: {fileID: 1621074027}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -1733,12 +1734,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1621074022}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adaa49f10205512409e4f900ba2b6659, type: 3}
+  m_Script: {fileID: 11500000, guid: 30f22c2789ac7b744a3ed0da9e9d7b08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 100000, guid: 2277b7556f9246b4d9abc331e79021f0, type: 3}
-  size: 50
-  depth: 50
+  columnPrefab: {fileID: 5218495890861070192, guid: 4b5acfe1b0efa5941b242e1c6905f6d4,
+    type: 3}
 --- !u!4 &1621074024
 Transform:
   m_ObjectHideFlags: 0
@@ -1783,6 +1783,18 @@ MonoBehaviour:
   chatBox: {fileID: 1165670806}
   chatBoxText: {fileID: 1420830503}
   chatInput: {fileID: 434924643}
+--- !u!114 &1621074027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621074022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4524fb701686dfa48adc231300f02a91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1740239831
 GameObject:
   m_ObjectHideFlags: 0

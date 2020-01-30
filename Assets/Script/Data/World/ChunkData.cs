@@ -3,41 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEngine;
 
-public class ChunkData
+namespace Cubecraft.Data.World
 {
-    public const int SizeX = 16;
-    public const int SizeY = 16;
-    public const int SizeZ = 16;
-
-    private readonly IBlock[,,] blocks = new AbstractBlock[SizeX, SizeY, SizeZ];
-
-    public IBlock this[int blockX, int blockY, int blockZ]
+    public class ChunkData
     {
-        get
+        public BlockStorage Blocks { get; private set; }
+        public ChunkData(BlockStorage blocks)
         {
-            if (blockX < 0 || blockX >= SizeX)
-                throw new ArgumentOutOfRangeException("blockX", "Must be between 0 and " + (SizeX - 1) + " (inclusive)");
-            if (blockY < 0 || blockY >= SizeY)
-                throw new ArgumentOutOfRangeException("blockY", "Must be between 0 and " + (SizeY - 1) + " (inclusive)");
-            if (blockZ < 0 || blockZ >= SizeZ)
-                throw new ArgumentOutOfRangeException("blockZ", "Must be between 0 and " + (SizeZ - 1) + " (inclusive)");
-            return blocks[blockX, blockY, blockZ];
+            this.Blocks = blocks;
         }
-        set
+        public BlockState this[int x, int y, int z]
         {
-            if (blockX < 0 || blockX >= SizeX)
-                throw new ArgumentOutOfRangeException("blockX", "Must be between 0 and " + (SizeX - 1) + " (inclusive)");
-            if (blockY < 0 || blockY >= SizeY)
-                throw new ArgumentOutOfRangeException("blockY", "Must be between 0 and " + (SizeY - 1) + " (inclusive)");
-            if (blockZ < 0 || blockZ >= SizeZ)
-                throw new ArgumentOutOfRangeException("blockZ", "Must be between 0 and " + (SizeZ - 1) + " (inclusive)");
-            blocks[blockX, blockY, blockZ] = value;
+            get
+            {
+                return this.Blocks[x, y, z];
+            }
         }
-    }
-    public IBlock GetBlock(Vector3 location)
-    {
-        return this[(int)location.x, (int)location.y, (int)location.z];
     }
 }
