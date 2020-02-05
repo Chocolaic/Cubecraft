@@ -68,6 +68,7 @@ namespace Cubecraft.Net.Protocol
             RegisterIncoming<ServerKeepAlivePacket>(0x1F);
             RegisterIncoming<ServerChunkDataPacket>(0x20);
             RegisterIncoming<ServerJoinGamePacket>(0x23);
+            RegisterIncoming<ServerPlayerPositionRotationPacket>(0x2F);
         }
         #endregion
         public void LoginToServer(SessionToken session)

@@ -71,6 +71,18 @@ namespace Cubecraft.Net.Protocol.IO
         {
             return ReadByte() != 0x00;
         }
+        public double ReadDouble()
+        {
+            byte[] rawValue = ReadData(8);
+            Array.Reverse(rawValue); //Endianness
+            return BitConverter.ToDouble(rawValue, 0);
+        }
+        public float ReadFloat()
+        {
+            byte[] rawValue = ReadData(4);
+            Array.Reverse(rawValue); //Endianness
+            return BitConverter.ToSingle(rawValue, 0);
+        }
         public short ReadShort()
         {
             byte[] rawValue = ReadData(2);

@@ -5,16 +5,14 @@ using Cubecraft.Data.World;
 
 public class World : MonoBehaviour
 {
-
     // 用来管理 chunk
     public Dictionary<Vector2Int, Column> chunks = new Dictionary<Vector2Int, Column>();
-    private Dictionary<int, Block> blockDic = new Dictionary<int, Block>();
     // chunk 预设体，用做创建对象的模板
     public GameObject columnPrefab;
 
     void Start()
     {
-
+        Global.blockDic.RegisterAll();
     }
 
     /// <summary>
@@ -29,9 +27,8 @@ public class World : MonoBehaviour
         GameObject newColumnObject = Instantiate(columnPrefab, pos, Quaternion.Euler(Vector3.zero));
 
         Column newColumn = newColumnObject.GetComponent<Column>();
+        chunks.Add(new Vector2Int(column.ChunkX, column.ChunkZ), newColumn);
         newColumn.world = this;
-        newColumn.posX = column.ChunkX;
-        newColumn.posZ = column.ChunkZ;
         StartCoroutine(newColumn.CreateColumn(column.ChunkX, column.ChunkZ, column));
     }
 
@@ -66,7 +63,6 @@ public class World : MonoBehaviour
         Vector2Int pos = new Vector2Int(x, z);
 
         chunks.TryGetValue(pos, out column);
-
         return column;
     }
 }

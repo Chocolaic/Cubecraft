@@ -18,47 +18,55 @@ public abstract class Block
     };
     const float tileSize = 0.25f;
     public struct Tile { public int x; public int y; }
-    public virtual Tile TexturePosition(Direction direction)
+    public virtual Tile TexturePosition (Direction direction)
     {
         Tile tile = new Tile();
         tile.x = 0;
         tile.y = 0;
         return tile;
     }
-    public virtual void SetMeshData(Chunk chunk, int x, int y, int z, MeshData meshData)
+    public virtual void SetMeshVertical(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
         meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x, y + 1, z)))
         {
-            meshData = Block.FaceDataUp(this, x, y, z, meshData);
+            Block.FaceDataUp(this, x, y, z, meshData);
         }
 
         if (Block.IsTransparent(chunk.GetBlock(x, y - 1, z)))
         {
-            meshData = Block.FaceDataDown(this, x, y, z, meshData);
+            Block.FaceDataDown(this, x, y, z, meshData);
         }
+    }
 
-        if (Block.IsTransparent(chunk.GetBlock(x, y, z + 1)))
-        {
-            meshData = Block.FaceDataBack(this, x, y, z, meshData);
-        }
-
-        if (Block.IsTransparent(chunk.GetBlock(x, y, z - 1)))
-        {
-            meshData = Block.FaceDataFront(this, x, y, z, meshData);
-        }
-
-        if (Block.IsTransparent(chunk.GetBlock(x + 1, y, z)))
-        {
-            meshData = Block.FaceDataRight(this, x, y, z, meshData);
-        }
-
+    public virtual void SetMeshLeft(Chunk chunk, int x, int y, int z, MeshData meshData)
+    {
         if (Block.IsTransparent(chunk.GetBlock(x - 1, y, z)))
         {
             Block.FaceDataLeft(this, x, y, z, meshData);
         }
     }
-
+    public virtual void SetMeshRight(Chunk chunk, int x, int y, int z, MeshData meshData)
+    {
+        if (Block.IsTransparent(chunk.GetBlock(x + 1, y, z)))
+        {
+            Block.FaceDataRight(this, x, y, z, meshData);
+        }
+    }
+    public virtual void SetMeshFront(Chunk chunk, int x, int y, int z, MeshData meshData)
+    {
+        if (Block.IsTransparent(chunk.GetBlock(x, y, z - 1)))
+        {
+            Block.FaceDataBack(this, x, y, z, meshData);
+        }
+    }
+    public virtual void SetMeshBack(Chunk chunk, int x, int y, int z, MeshData meshData)
+    {
+        if (Block.IsTransparent(chunk.GetBlock(x, y, z + 1)))
+        {
+            Block.FaceDataFront(this, x, y, z, meshData);
+        }
+    }
     public static Vector2[] FaceUVs(Direction direction, Block block)
     {
         Vector2[] UVs = new Vector2[4];
@@ -105,7 +113,7 @@ public abstract class Block
         return meshData;
     }
 
-    public static MeshData FaceDataBack(Block block, int x, int y, int z, MeshData meshData)
+    public static MeshData FaceDataFront(Block block, int x, int y, int z, MeshData meshData)
     {
         meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
         meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
@@ -114,7 +122,7 @@ public abstract class Block
 
         meshData.AddQuadTriangles();
         //Add the following line to every FaceData function with the direction of the face
-        meshData.uv.AddRange(FaceUVs(Direction.Back, block));
+        meshData.uv.AddRange(FaceUVs(Direction.Front, block));
         return meshData;
     }
 
@@ -131,7 +139,7 @@ public abstract class Block
         return meshData;
     }
 
-    public static MeshData FaceDataFront(Block block, int x, int y, int z, MeshData meshData)
+    public static MeshData FaceDataBack(Block block, int x, int y, int z, MeshData meshData)
     {
         meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
         meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
@@ -140,7 +148,7 @@ public abstract class Block
 
         meshData.AddQuadTriangles();
         //Add the following line to every FaceData function with the direction of the face
-        meshData.uv.AddRange(FaceUVs(Direction.Front, block));
+        meshData.uv.AddRange(FaceUVs(Direction.Back, block));
         return meshData;
     }
 

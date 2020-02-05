@@ -1,4 +1,5 @@
-﻿using Cubecraft.Net.Protocol;
+﻿using Cubecraft.Data.World;
+using Cubecraft.Net.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,4 +14,5 @@ class Global
     public static string currentServerHost;
     public static int currentServerPort;
     public static int protocolVersion = Protocol.MC1122Version;
+    public static BlockData blockDic = new BlockData();
 }

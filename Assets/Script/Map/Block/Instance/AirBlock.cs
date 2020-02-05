@@ -4,13 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class AirBlock : Block
+namespace Cubecraft.Data.World.Blocks
 {
-    public override int BlockID { get { return 0; } }
-
-    public override bool Transparent { get { return true; } }
-    public override void SetMeshData(Chunk chunk, int x, int y, int z, MeshData meshData)
+    public class AirBlock : Block
     {
-        
+        public override int BlockID { get { return 0; } }
+
+        public override bool Transparent { get { return true; } }
+        public override void SetMeshVertical(Chunk chunk, int x, int y, int z, MeshData meshData) { }
+        public override void SetMeshLeft(Chunk chunk, int x, int y, int z, MeshData meshData) { }
+        public override void SetMeshRight(Chunk chunk, int x, int y, int z, MeshData meshData) { }
+        public override void SetMeshFront(Chunk chunk, int x, int y, int z, MeshData meshData) { }
+        public override void SetMeshBack(Chunk chunk, int x, int y, int z, MeshData meshData) { }
     }
 }

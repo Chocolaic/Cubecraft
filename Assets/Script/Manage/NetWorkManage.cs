@@ -1,6 +1,7 @@
 ﻿using Cubecraft.Data.World;
 using Cubecraft.Net.Protocol;
 using Cubecraft.Net.Protocol.Packets;
+using Cubecraft.Net.Protocol.Player;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -57,15 +58,20 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
                 CubeProtocol.currentDimension = joinGamePacket.Dimension;
             }else if(packet.GetType() == typeof(ServerChunkDataPacket))
             {
-                if (first)
-                {
-                    mapManager.chunkQueue.Enqueue(((ServerChunkDataPacket)packet).Column);
-                    //first = false;
-                }
+                mapManager.chunkQueue.Enqueue(((ServerChunkDataPacket)packet).Column);
+            }
+            else if(packet.GetType() == typeof(ServerPlayerPositionRotationPacket))
+            {
+                ServerPlayerPositionRotationPacket positionAndLook = (ServerPlayerPositionRotationPacket)packet;
+                Debug.Log("X:" + positionAndLook.x + " Y:" + positionAndLook.y + " z:" + positionAndLook.z);
+                List<PositionField> posfield = positionAndLook.Relative;
+                mapManager.SetPlayerPosition(new Vector3(
+                    (float)(posfield.Contains(PositionField.X) ? 0 : positionAndLook.x),
+                    (float)(posfield.Contains(PositionField.Y) ? 0 : positionAndLook.y) + 20f,
+                    (float)(posfield.Contains(PositionField.Z) ? 0 : positionAndLook.z)));
             }
         }
     }
-    bool first = true;
     public void ChatInput(string text)
     {
         Debug.Log("Input:" + text);

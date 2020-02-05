@@ -13,13 +13,14 @@ using UnityEngine;
 public class Chunk : MonoBehaviour
 {
 
-    private Block[,,] blocks; //用于存放数据块的方块的数据
-    public static int chunkSize = 16;  //设置数据块的大小
+    private Block[,,] blocks = new Block[16, 16, 16]; //用于存放数据块的方块的数据
+    public int chunkSize = 0;  //设置数据块的大小
     private bool update = false;  //一个标志位，用于判断该数据块是否已经更新
+    private bool[] updateComplete = new bool[4];
 
     MeshFilter filter;
     MeshCollider coll;
-
+    MeshData meshData = new MeshData();
     public Column column;
     public ChunkData chunkData;
     public int position;
@@ -28,7 +29,6 @@ public class Chunk : MonoBehaviour
     {
         filter = gameObject.GetComponent<MeshFilter>();
         coll = gameObject.GetComponent<MeshCollider>();
-        blocks = new Block[chunkSize, chunkSize, chunkSize];
     }
 
     void Update()
@@ -37,6 +37,14 @@ public class Chunk : MonoBehaviour
         {
             update = false;
             UpdateChunk();
+        }
+        if (updateComplete[0] && updateComplete[1] && updateComplete[2] && updateComplete[3])
+        {
+            RenderMesh(meshData);
+            updateComplete[0] = false;
+            updateComplete[1] = false;
+            updateComplete[2] = false;
+            updateComplete[3] = false;
         }
     }
 
@@ -73,22 +81,101 @@ public class Chunk : MonoBehaviour
     /// </summary>
     void UpdateChunk()
     {
-        MeshData meshData = new MeshData();
-
+        meshData = new MeshData();
         for (int x = 0; x < chunkSize; x++)
         {
             for (int y = 0; y < chunkSize; y++)
             {
                 for (int z = 0; z < chunkSize; z++)
                 {
-                    blocks[x, y, z].SetMeshData(this, x, y, z, meshData);
+                    blocks[x, y, z].SetMeshVertical(this, x, y, z, meshData);
                 }
             }
         }
 
-        RenderMesh(meshData);
+        Column targetColumn = null; Chunk targetChunk = null;
+        if ((targetColumn = column.world.GetColumn(column.posX + 1, column.posZ)) != null)
+        {
+            if ((targetChunk = targetColumn[position]) != null)
+                targetChunk.UpdateLeft();
+            UpdateRight();
+        }
+        if ((targetColumn = column.world.GetColumn(column.posX - 1, column.posZ)) != null)
+        {
+            if ((targetChunk = targetColumn[position]) != null)
+                targetChunk.UpdateRight();
+            UpdateLeft();
+        }
+        if ((targetColumn = column.world.GetColumn(column.posX, column.posZ + 1)) != null)
+        {
+            if ((targetChunk = targetColumn[position]) != null)
+                targetChunk.UpdateFront();
+            UpdateBack();
+        }
+        if ((targetColumn = column.world.GetColumn(column.posX, column.posZ - 1)) != null)
+        {
+            if ((targetChunk = targetColumn[position]) != null)
+                targetChunk.UpdateBack();
+            UpdateFront();
+        }
     }
 
+    public  void UpdateLeft()
+    {
+        for (int x = 0; x < chunkSize; x++)
+        {
+            for (int y = 0; y < chunkSize; y++)
+            {
+                for (int z = 0; z < chunkSize; z++)
+                {
+                    blocks[x, y, z].SetMeshLeft(this, x, y, z, meshData);
+                }
+            }
+        }
+        updateComplete[0] = true;
+    }
+    public void UpdateRight()
+    {
+        for (int x = 0; x < chunkSize; x++)
+        {
+            for (int y = 0; y < chunkSize; y++)
+            {
+                for (int z = 0; z < chunkSize; z++)
+                {
+                    blocks[x, y, z].SetMeshRight(this, x, y, z, meshData);
+                }
+            }
+        }
+        updateComplete[1] = true;
+    }
+    public void UpdateFront()
+    {
+        for (int x = 0; x < chunkSize; x++)
+        {
+            for (int y = 0; y < chunkSize; y++)
+            {
+                for (int z = 0; z < chunkSize; z++)
+                {
+                    blocks[x, y, z].SetMeshFront(this, x, y, z, meshData);
+                }
+            }
+        }
+        updateComplete[2] = true;
+    }
+    public void UpdateBack()
+    {
+        for (int x = 0; x < chunkSize; x++)
+        {
+            for (int y = 0; y < chunkSize; y++)
+            {
+                for (int z = 0; z < chunkSize; z++)
+                {
+                    blocks[x, y, z].SetMeshBack (this, x, y, z, meshData);
+                }
+            }
+        }
+        updateComplete[3] = true;
+    }
     public void DoUpdate()
     {
         this.update = true;

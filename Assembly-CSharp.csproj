@@ -66,6 +66,7 @@
     <Compile Include="Assets\Script\Data\Servers.cs" />
     <Compile Include="Assets\Script\Data\Session\SessionCache.cs" />
     <Compile Include="Assets\Script\Data\Session\SessionToken.cs" />
+    <Compile Include="Assets\Script\Data\World\BlockData.cs" />
     <Compile Include="Assets\Script\Data\World\BlockState.cs" />
     <Compile Include="Assets\Script\Data\World\BlockStorage.cs" />
     <Compile Include="Assets\Script\Data\World\ChunkColumn.cs" />
@@ -80,7 +81,10 @@
     <Compile Include="Assets\Script\Map\Block\Block.cs" />
     <Compile Include="Assets\Script\Map\Block\BlockMaterial.cs" />
     <Compile Include="Assets\Script\Map\Block\Instance\AirBlock.cs" />
+    <Compile Include="Assets\Script\Map\Block\Instance\DirtBlock.cs" />
     <Compile Include="Assets\Script\Map\Block\Instance\GrassBlock.cs" />
+    <Compile Include="Assets\Script\Map\Block\Instance\StoneBlock.cs" />
+    <Compile Include="Assets\Script\Map\Block\Instance\WoodBlock.cs" />
     <Compile Include="Assets\Script\Map\Block\MeshData.cs" />
     <Compile Include="Assets\Script\Map\Chunk.cs" />
     <Compile Include="Assets\Script\Map\Column.cs" />
@@ -134,6 +138,8 @@
     <Compile Include="Assets\Script\Net\Protocol\Packets\Server\ServerDisconnectPacket.cs" />
     <Compile Include="Assets\Script\Net\Protocol\Packets\Server\ServerJoinGamePacket.cs" />
     <Compile Include="Assets\Script\Net\Protocol\Packets\Server\ServerKeepAlivePacket.cs" />
+    <Compile Include="Assets\Script\Net\Protocol\Packets\Server\ServerPlayerPositionRotationPacket.cs" />
+    <Compile Include="Assets\Script\Net\Protocol\Packets\Server\ServerRespawnPacket.cs" />
     <Compile Include="Assets\Script\Net\Protocol\Packets\Server\ServerSetCompressionPacket.cs" />
     <Compile Include="Assets\Script\Net\Protocol\Packets\Server\StatusResponsePacket.cs" />
     <Compile Include="Assets\Script\Net\Protocol\Protocol.cs" />
@@ -141,6 +147,7 @@
     <Compile Include="Assets\Script\Net\Protocol\SocketWrapper.cs" />
     <Compile Include="Assets\Script\Net\Protocol\ZlibUtils.cs" />
     <Compile Include="Assets\Script\Net\Templates\DisconnectReason.cs" />
+    <Compile Include="Assets\Script\Net\Templates\Player\PositionField.cs" />
     <Compile Include="Assets\Script\Net\Templates\StatusInfo.cs" />
     <Compile Include="Assets\Script\Net\Templates\SubProtocol.cs" />
     <Compile Include="Assets\Script\UI\GameMenu.cs" />
@@ -149,9 +156,12 @@
     <Compile Include="Assets\Script\UI\NameBox.cs" />
     <Compile Include="Assets\Script\UI\ServerItem.cs" />
     <Compile Include="Assets\Script\UI\ServerList.cs" />
+    <Compile Include="Assets\Script\Utilities\Charactor\ThirdPersonCamera.cs" />
+    <Compile Include="Assets\Script\Utilities\Charactor\ThirdPersonController.cs" />
     <Compile Include="Assets\Script\Utilities\ChatParser.cs" />
     <Compile Include="Assets\Script\Utilities\ColorUtility.cs" />
     <Compile Include="Assets\Script\Utilities\Json.cs" />
+    <Compile Include="Assets\Script\Utilities\LayerCullingDis.cs" />
     <Compile Include="Assets\Script\Utilities\Standard Assets\Characters\FirstPersonCharacter\Scripts\FirstPersonController.cs" />
     <Compile Include="Assets\Script\Utilities\Standard Assets\Characters\FirstPersonCharacter\Scripts\HeadBob.cs" />
     <Compile Include="Assets\Script\Utilities\Standard Assets\Characters\FirstPersonCharacter\Scripts\MouseLook.cs" />

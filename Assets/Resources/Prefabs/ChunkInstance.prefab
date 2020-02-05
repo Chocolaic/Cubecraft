@@ -13,12 +13,12 @@ GameObject:
   - component: {fileID: 219423348503987281}
   - component: {fileID: 6377098765595298642}
   - component: {fileID: 7157857966837703314}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ChunkInstance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2
   m_IsActive: 1
 --- !u!4 &972469178232008393
 Transform:
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 8c91b738de8380c4ea9b310a8a9019a5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -105,5 +105,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb6aeec5039d305459a32a03e6abac48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chunkSize: 0
   column: {fileID: 0}
   position: 0
