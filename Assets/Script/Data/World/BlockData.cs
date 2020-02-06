@@ -10,27 +10,27 @@ namespace Cubecraft.Data.World
     class BlockData
     {
         //提高读取速度而没有用字典
-        private Type[] blockDic = new Type[256];
-        public void RegisterBlock<T>(int id) where T : Block
+        private Block[] blockDic = new Block[256];
+        public void RegisterBlock(int id, Block block)
         {
-            blockDic[id] = typeof(T);
+            blockDic[id] = block;
         }
-        public Block Instantiate(int id)
+        public Block GetBlock(int id)
         {
-            Type block = null;
+            Block block = null;
             if ((block = blockDic[id]) != null)
-                return (Block)Activator.CreateInstance(block);
+                return block;
             else
                 return new GrassBlock();
         }
 
         public void RegisterAll()
         {
-            RegisterBlock<AirBlock>(0);
-            RegisterBlock<StoneBlock>(1);
-            RegisterBlock<GrassBlock>(2);
-            RegisterBlock<DirtBlock>(3);
-            RegisterBlock<WoodBlock>(17 );
+            RegisterBlock(0, new AirBlock());
+            RegisterBlock(1, new StoneBlock());
+            RegisterBlock(2, new GrassBlock());
+            RegisterBlock(3, new DirtBlock());
+            RegisterBlock(17, new WoodBlock());
         }
     }
 }

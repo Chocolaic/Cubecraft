@@ -55,9 +55,13 @@ public class GameManager : MonoBehaviour
         chatInput.GetComponent<InputField>().text = "";
         chatInput.SetActive(InputEnable);
     }
-    public void ShowMsg(string text)
+    public void InterruptGame(string text)
     {
         msgBox.SetActive(true);
-        msgBox.GetComponent<MessageBox>().Show(text);
+        msgBox.GetComponent<MessageBox>().ShowText(text);
+    }
+    public void EndLoading()
+    {
+        msgBox.SetActive(false);
     }
 }

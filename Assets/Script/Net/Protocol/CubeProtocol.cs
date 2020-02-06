@@ -102,7 +102,8 @@ namespace Cubecraft.Net.Protocol
                     handler.OnConnectionLost(DisconnectReason.ConnectionLost, ColorUtility.Set(ColorUtility.Red, "与服务器断开连接"));
             }
 
-            netRead = new System.Threading.Thread(() => {
+            netRead = new System.Threading.Thread(() =>
+            {
                 while (socketWrapper.IsConnected())
                 {
                     Packet packet = ReadPacket();
@@ -120,7 +121,8 @@ namespace Cubecraft.Net.Protocol
                     }
                 }
                 Debug.Log(netRead.Name + " stoped.");
-            });
+            })
+            { Name = "PacketHandler", IsBackground = true };
             netSend = new System.Threading.Thread(() =>
             {
                 while (socketWrapper.IsConnected())
@@ -130,11 +132,10 @@ namespace Cubecraft.Net.Protocol
                         SendPacket(packet);
                 }
                 Debug.Log(netSend.Name + " stoped.");
-            });
+            })
+            { Name = "PacketSender", IsBackground = true };
 
-            netRead.Name = "PacketHandler";
             netRead.Start();
-            netSend.Name = "PacketSender";
             netSend.Start();
 
         }

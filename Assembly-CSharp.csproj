@@ -150,7 +150,8 @@
     <Compile Include="Assets\Script\Net\Templates\Player\PositionField.cs" />
     <Compile Include="Assets\Script\Net\Templates\StatusInfo.cs" />
     <Compile Include="Assets\Script\Net\Templates\SubProtocol.cs" />
-    <Compile Include="Assets\Script\UI\GameMenu.cs" />
+    <Compile Include="Assets\Script\UI\ButtonStyle.cs" />
+    <Compile Include="Assets\Script\UI\Game\GameMenu.cs" />
     <Compile Include="Assets\Script\UI\Menu.cs" />
     <Compile Include="Assets\Script\UI\MessageBox.cs" />
     <Compile Include="Assets\Script\UI\NameBox.cs" />

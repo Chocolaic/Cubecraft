@@ -5,22 +5,26 @@ using UnityEngine.UI;
 
 public class MessageBox : MonoBehaviour
 {
+    [SerializeField]
+    public GameObject textObj, loadObj;
+    public Sprite[] loadingFrames;
     private float interval;
+    int pload;
     // Start is called before the first frame update
 
     // Update is called once per frame
     void Update()
     {
         interval += Time.deltaTime;
-        if(interval > 3)
+        if(interval > 0.3)
         {
             interval = 0;
-            GetComponent<Text>().text = "";
-            gameObject.SetActive(false);
+            loadObj.GetComponent<Image>().sprite = loadingFrames[pload];
+            pload = (pload + 1) % loadingFrames.Length;
         }
     }
-    public void Show(string text)
+    public void ShowText(string text)
     {
-        GetComponent<Text>().text = text;
+        textObj.GetComponent<Text>().text = text;
     }
 }

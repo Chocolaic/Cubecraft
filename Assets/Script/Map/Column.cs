@@ -40,7 +40,7 @@ public class Column : MonoBehaviour
                     {
                         for (int blockZ = 0; blockZ < newChunk.chunkSize; blockZ++)
                         {
-                            newChunk.SetBlock(blockX, blockY, blockZ, Global.blockDic.Instantiate(chunk[blockX, blockY, blockZ].ID));
+                            newChunk.SetBlock(blockX, blockY, blockZ, Global.blockDic.GetBlock(chunk[blockX, blockY, blockZ].ID));
                         }
                     }
                 }

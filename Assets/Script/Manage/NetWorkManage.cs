@@ -62,6 +62,7 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
             }
             else if(packet.GetType() == typeof(ServerPlayerPositionRotationPacket))
             {
+                gameManager.EndLoading();
                 ServerPlayerPositionRotationPacket positionAndLook = (ServerPlayerPositionRotationPacket)packet;
                 Debug.Log("X:" + positionAndLook.x + " Y:" + positionAndLook.y + " z:" + positionAndLook.z);
                 List<PositionField> posfield = positionAndLook.Relative;
@@ -93,7 +94,7 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
             case DisconnectReason.LoginRejected: alert = "拒绝登录："; break;
         }
         protocolHander.Dispose();
-        gameManager.ShowMsg(alert + msg);
+        gameManager.InterruptGame(alert + msg);
     }
 
     public void OnGameJoined()

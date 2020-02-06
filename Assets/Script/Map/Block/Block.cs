@@ -83,7 +83,7 @@ public abstract class Block
     }
     public static bool IsTransparent(BlockState state)
     {
-        return state.ID == 0;
+        return Global.blockDic.GetBlock(state.ID).Transparent;
     }
 
     public static MeshData FaceDataUp(Block block, int x, int y, int z, MeshData meshData)
