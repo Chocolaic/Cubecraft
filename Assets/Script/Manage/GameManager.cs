@@ -11,10 +11,19 @@ public class GameManager : MonoBehaviour
     public ScrollRect chatBox;
     public GameObject chatBoxText;
     public GameObject chatInput;
-
+    public GameObject menu;
     List<GameObject> chatList = new List<GameObject>();
 
     bool _inputEnable;
+    bool lockOperation = true;
+    private bool menuactive = false;
+    bool MenuActive
+    {
+        get
+        {
+            menuactive = !menuactive; return menuactive;
+        }
+    }
     bool InputEnable { get
         {
             _inputEnable = !_inputEnable; return _inputEnable;
@@ -28,9 +37,16 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (!lockOperation)
         {
-            chatInput.SetActive(InputEnable);
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                chatInput.SetActive(InputEnable);
+            }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                menu.SetActive(MenuActive);
+            }
         }
     }
     public void AddChatText(string text)
@@ -57,11 +73,13 @@ public class GameManager : MonoBehaviour
     }
     public void InterruptGame(string text)
     {
+        lockOperation = true;
         msgBox.SetActive(true);
         msgBox.GetComponent<MessageBox>().ShowText(text);
     }
     public void EndLoading()
     {
+        lockOperation = false;
         msgBox.SetActive(false);
     }
 }

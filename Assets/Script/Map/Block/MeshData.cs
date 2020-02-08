@@ -11,7 +11,7 @@ public class MeshData
     public List<Vector3> colVertices = new List<Vector3>(); //用于存放顶点碰撞信息
     public List<int> colTriangles = new List<int>();        //用于存放三角形碰撞信息
 
-    public bool useRenderDataForCol;    //是否使用碰撞
+    public bool useRenderDataForCol = true;    //是否使用碰撞
 
     public MeshData () { }
 

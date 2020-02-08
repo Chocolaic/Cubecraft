@@ -13,6 +13,7 @@ public class ThirdPersonCamera : MonoBehaviour
     public float yMaxLimit = 80f;
 
     Transform maincamera;
+    Camera tcamera;
     private float targetDistance = 0f;
     private float targetX = 0f;
     private float targetY = 0f;
@@ -25,6 +26,7 @@ public class ThirdPersonCamera : MonoBehaviour
     void Start()
     {
         maincamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        tcamera = maincamera.gameObject.GetComponent<Camera>();
         var angles = maincamera.eulerAngles;
         targetY = y = ClampAngle(angles.y, yMinLimit, yMaxLimit);
         targetDistance = distance;
@@ -50,6 +52,16 @@ public class ThirdPersonCamera : MonoBehaviour
         Vector3 position = rotation * new Vector3(0.0f, 0.0f, -distance) + transform.position + pivotOffset;
         maincamera.rotation = rotation;
         maincamera.position = position;
+    }
+    void OnGUI()
+    {
+        Vector2 position = tcamera.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z));
+        position = new Vector2(position.x, Screen.height - position.y);
+        Vector2 nameSize = GUI.skin.label.CalcSize(new GUIContent(name));
+        GUIStyle fontStyle = new GUIStyle();
+        fontStyle.normal.textColor = Color.gray;
+        fontStyle.fontSize = 26;
+        GUI.Label(new Rect(position.x - (nameSize.x / 2), position.y - nameSize.y, nameSize.x, nameSize.y), name, fontStyle);
     }
     private float ClampAngle(float angle, float min, float max)
     {

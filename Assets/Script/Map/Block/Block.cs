@@ -27,15 +27,14 @@ public abstract class Block
     }
     public virtual void SetMeshVertical(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
-        meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x, y + 1, z)))
         {
-            Block.FaceDataUp(this, x, y, z, meshData);
+            FaceDataUp(x, y, z, meshData);
         }
 
         if (Block.IsTransparent(chunk.GetBlock(x, y - 1, z)))
         {
-            Block.FaceDataDown(this, x, y, z, meshData);
+            FaceDataDown(x, y, z, meshData);
         }
     }
 
@@ -43,28 +42,28 @@ public abstract class Block
     {
         if (Block.IsTransparent(chunk.GetBlock(x - 1, y, z)))
         {
-            Block.FaceDataLeft(this, x, y, z, meshData);
+            FaceDataLeft(x, y, z, meshData);
         }
     }
     public virtual void SetMeshRight(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
         if (Block.IsTransparent(chunk.GetBlock(x + 1, y, z)))
         {
-            Block.FaceDataRight(this, x, y, z, meshData);
+            FaceDataRight(x, y, z, meshData);
         }
     }
     public virtual void SetMeshFront(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
         if (Block.IsTransparent(chunk.GetBlock(x, y, z - 1)))
         {
-            Block.FaceDataBack(this, x, y, z, meshData);
+            FaceDataBack(x, y, z, meshData);
         }
     }
     public virtual void SetMeshBack(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
         if (Block.IsTransparent(chunk.GetBlock(x, y, z + 1)))
         {
-            Block.FaceDataFront(this, x, y, z, meshData);
+            FaceDataFront(x, y, z, meshData);
         }
     }
     public static Vector2[] FaceUVs(Direction direction, Block block)
@@ -86,7 +85,7 @@ public abstract class Block
         return Global.blockDic.GetBlock(state.ID).Transparent;
     }
 
-    public static MeshData FaceDataUp(Block block, int x, int y, int z, MeshData meshData)
+    protected virtual MeshData FaceDataUp(int x, int y, int z, MeshData meshData)
     {
         //meshData.vertices.Add(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f)); //原来的方式
         meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));      //转换的方式
@@ -96,11 +95,11 @@ public abstract class Block
 
         meshData.AddQuadTriangles();
         //其它方向上的函数也要添加下面这行代码。
-        meshData.uv.AddRange(FaceUVs(Direction.Up, block));
+        meshData.uv.AddRange(FaceUVs(Direction.Up, this));
         return meshData;
     }
 
-    public static MeshData FaceDataDown(Block block, int x, int y, int z, MeshData meshData)
+    protected virtual MeshData FaceDataDown(int x, int y, int z, MeshData meshData)
     {
         meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
         meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
@@ -109,11 +108,11 @@ public abstract class Block
 
         meshData.AddQuadTriangles();
         //Add the following line to every FaceData function with the direction of the face
-        meshData.uv.AddRange(FaceUVs(Direction.Down, block));
+        meshData.uv.AddRange(FaceUVs(Direction.Down, this));
         return meshData;
     }
 
-    public static MeshData FaceDataFront(Block block, int x, int y, int z, MeshData meshData)
+    protected virtual MeshData FaceDataFront(int x, int y, int z, MeshData meshData)
     {
         meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
         meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
@@ -122,11 +121,11 @@ public abstract class Block
 
         meshData.AddQuadTriangles();
         //Add the following line to every FaceData function with the direction of the face
-        meshData.uv.AddRange(FaceUVs(Direction.Front, block));
+        meshData.uv.AddRange(FaceUVs(Direction.Front, this));
         return meshData;
     }
 
-    public static MeshData FaceDataRight(Block block, int x, int y, int z, MeshData meshData)
+    protected virtual MeshData FaceDataRight(int x, int y, int z, MeshData meshData)
     {
         meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
         meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
@@ -135,11 +134,11 @@ public abstract class Block
 
         meshData.AddQuadTriangles();
         //Add the following line to every FaceData function with the direction of the face
-        meshData.uv.AddRange(FaceUVs(Direction.Right, block));
+        meshData.uv.AddRange(FaceUVs(Direction.Right, this));
         return meshData;
     }
 
-    public static MeshData FaceDataBack(Block block, int x, int y, int z, MeshData meshData)
+    protected virtual MeshData FaceDataBack(int x, int y, int z, MeshData meshData)
     {
         meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
         meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
@@ -148,11 +147,11 @@ public abstract class Block
 
         meshData.AddQuadTriangles();
         //Add the following line to every FaceData function with the direction of the face
-        meshData.uv.AddRange(FaceUVs(Direction.Back, block));
+        meshData.uv.AddRange(FaceUVs(Direction.Back, this));
         return meshData;
     }
 
-    public static MeshData FaceDataLeft(Block block, int x, int y, int z, MeshData meshData)
+    protected virtual MeshData FaceDataLeft(int x, int y, int z, MeshData meshData)
     {
         meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
         meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
@@ -161,7 +160,7 @@ public abstract class Block
 
         meshData.AddQuadTriangles();
         //Add the following line to every FaceData function with the direction of the face
-        meshData.uv.AddRange(FaceUVs(Direction.Left, block));
+        meshData.uv.AddRange(FaceUVs(Direction.Left, this));
         return meshData;
     }
 }

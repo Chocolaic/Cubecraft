@@ -6,6 +6,7 @@ public class ThirdPersonController : MonoBehaviour
 {
     public float MoveSpeed = 5.0f;
     public float JumpSpeed = 5.0f;
+    internal IPlayerAction action;
     Transform m_camera;
     CharacterController controller;
     private Vector3 moveDirection = Vector3.zero;
@@ -18,8 +19,9 @@ public class ThirdPersonController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {  
-        if (controller.isGrounded)
+    {
+        bool onGround = controller.isGrounded;
+        if (onGround)
         {
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
             {
@@ -43,5 +45,8 @@ public class ThirdPersonController : MonoBehaviour
         else
             moveDirection.y -= 10 * Time.deltaTime;
         controller.Move(moveDirection * Time.deltaTime);
+        if (moveDirection != Vector3.zero)
+            action.UpdatePosition(onGround, transform.position.x, onGround ? (int)transform.position.y : transform.position.y, transform.position.z);
+
     }
 }

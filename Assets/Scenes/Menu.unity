@@ -301,8 +301,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -40, y: -112.5}
-  m_SizeDelta: {x: -680, y: -425}
+  m_AnchoredPosition: {x: -40, y: -110}
+  m_SizeDelta: {x: -680, y: -440}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &131317172
 MonoBehaviour:
@@ -324,7 +324,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.29156283, g: 0.7129581, b: 0.9811321, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -1030,6 +1030,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f22564333eeaec469d0eba5a08140c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normalImg: {fileID: 21300000, guid: c639470ee0dcc1e49a0848308040b28a, type: 3}
+  activeImg: {fileID: 21300000, guid: 266351ce3742c9a418711673280a9ea9, type: 3}
+  textObj: {fileID: 595031981}
+  normalFront: <color=#4876FF>QUIT</color>
+  activeFront: <color=#4876FF>QUIT</color>
 --- !u!114 &729043528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1390,6 +1395,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c7457a092262cf429e5a5022801c5c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textObj: {fileID: 0}
+  loadObj: {fileID: 0}
+  loadingFrames: []
 --- !u!1 &1227504633
 GameObject:
   m_ObjectHideFlags: 0
@@ -1644,7 +1652,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u767B\u5F55"
+  m_Text: "<color=#ffffff>\u767B\u5F55</color>"
 --- !u!222 &1419862431
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6873,6 +6881,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f22564333eeaec469d0eba5a08140c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normalImg: {fileID: 21300000, guid: c639470ee0dcc1e49a0848308040b28a, type: 3}
+  activeImg: {fileID: 21300000, guid: 266351ce3742c9a418711673280a9ea9, type: 3}
+  textObj: {fileID: 124724040}
+  normalFront: <color=#4876FF>ONLINE GAME</color>
+  activeFront: <color=#4876FF>ONLINE GAME</color>
 --- !u!114 &1871084843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7001,18 +7014,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2138207804}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2142756735}
-        m_MethodName: BtnOffline_Click
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2138207804
@@ -7064,6 +7066,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f22564333eeaec469d0eba5a08140c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normalImg: {fileID: 21300000, guid: c639470ee0dcc1e49a0848308040b28a, type: 3}
+  activeImg: {fileID: 21300000, guid: 266351ce3742c9a418711673280a9ea9, type: 3}
+  textObj: {fileID: 896758965}
+  normalFront: <color=#4876FF>START GAME</color>
+  activeFront: <color=#4876FF>START GAME</color>
 --- !u!114 &2138207807
 MonoBehaviour:
   m_ObjectHideFlags: 0

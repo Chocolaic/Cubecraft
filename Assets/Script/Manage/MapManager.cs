@@ -1,11 +1,13 @@
 ﻿using Cubecraft.Data.World;
+using Cubecraft.Net.Protocol.Packets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapManager : MonoBehaviour
+public class MapManager : MonoBehaviour, IPlayerAction
 {
     [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private NetWorkManage netWorkManage;
     private GameObject player;
     public Queue<ChunkColumn> chunkQueue = new Queue<ChunkColumn>();
     World world;
@@ -27,7 +29,25 @@ public class MapManager : MonoBehaviour
         if (this.player == null)
         {
             this.player = Instantiate(playerPrefab);
+            this.player.name = Global.sessionToken.selectedProfile.name;
+            this.player.GetComponent<ThirdPersonController>().action = this;
         }
         this.player.transform.position = pos;
+    }
+    public void UpdatePosition(bool onGround, float x, float y, float z)
+    {
+        netWorkManage.SendPacket(new ClientPlayerPositionPacket(onGround, x, y, z));
+    }
+    public void UnloadDimension()
+    {
+        foreach(var column in world.chunks.Values)
+        {
+            Destroy(column);
+        }
+        world.chunks.Clear();
+    }
+    public World GetWorld()
+    {
+        return this.world;
     }
 }

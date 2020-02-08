@@ -15,7 +15,7 @@ namespace Cubecraft.Net.Protocol.Packets
         public float Yaw { get; private set; }
         public float Pitch { get; private set; }
         public List<PositionField> Relative { get; private set; }
-        public float TeleportID { get; private set; }
+        public int TeleportID { get; private set; }
         public override void Read(InputBuffer input)
         {
             this.x = input.ReadDouble();

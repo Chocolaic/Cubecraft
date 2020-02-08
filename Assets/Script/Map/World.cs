@@ -23,11 +23,14 @@ public class World : MonoBehaviour
     /// <param name="z"></param>
     public void CreateColumn(ChunkColumn column)
     {
-        Vector3 pos = new Vector3(column.ChunkX, 0, column.ChunkZ);
-        GameObject newColumnObject = Instantiate(columnPrefab, pos, Quaternion.Euler(Vector3.zero));
+        Vector2Int dicpos = new Vector2Int(column.ChunkX, column.ChunkZ);
+        if (chunks.ContainsKey(dicpos))
+            DestroyColumn(dicpos);//重新载入区块
+        Vector3 worldpos = new Vector3(column.ChunkX, 0, column.ChunkZ);
+        GameObject newColumnObject = Instantiate(columnPrefab, worldpos, Quaternion.Euler(Vector3.zero));
 
         Column newColumn = newColumnObject.GetComponent<Column>();
-        chunks.Add(new Vector2Int(column.ChunkX, column.ChunkZ), newColumn);
+        chunks.Add(dicpos, newColumn);
         newColumn.world = this;
         StartCoroutine(newColumn.CreateColumn(column.ChunkX, column.ChunkZ, column));
     }
@@ -41,11 +44,15 @@ public class World : MonoBehaviour
     public void DestroyColumn(int x, int z)
     {
         // 逻辑简单，就是找到指定的 chunk，然后先销毁游戏对象，再移除管理即可（移除对应字典的值）
+        DestroyColumn(new Vector2Int(x, z));
+    }
+    public void DestroyColumn(Vector2Int pos)
+    {
         Column column = null;
-        if (chunks.TryGetValue(new Vector2Int(x, z), out column))
+        if (chunks.TryGetValue(pos, out column))
         {
             Object.Destroy(column.gameObject);
-            chunks.Remove(new Vector2Int(x, z));
+            chunks.Remove(pos);
         }
     }
 

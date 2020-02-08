@@ -30,7 +30,10 @@ namespace Cubecraft.Data.World
             RegisterBlock(1, new StoneBlock());
             RegisterBlock(2, new GrassBlock());
             RegisterBlock(3, new DirtBlock());
+            RegisterBlock(9, new WaterBlock());
+            RegisterBlock(12, new SandBlock());
             RegisterBlock(17, new WoodBlock());
+            RegisterBlock(18, new LeavesBlock());
         }
     }
 }

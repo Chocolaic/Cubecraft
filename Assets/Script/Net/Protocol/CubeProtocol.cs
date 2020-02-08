@@ -60,15 +60,22 @@ namespace Cubecraft.Net.Protocol
         }
         private void initGame()
         {
+            RegisterOutgoing<ClientTeleportConfirmPacket>(0x00);
             RegisterOutgoing<ClientChatPacket>(0x02);
+            RegisterOutgoing<ClientRequestPacket>(0x03);
             RegisterOutgoing<ClientKeepAlivePacket>(0x0B);
+            RegisterOutgoing<ClientPlayerMovementPacket>(0x0C);
+            RegisterOutgoing<ClientPlayerPositionPacket>(0x0D);
 
             RegisterIncoming<ServerChatPacket>(0x0F);
             RegisterIncoming<ServerDisconnectPacket>(0x1A);
+            RegisterIncoming<ServerUnloadChunkPacket>(0x1D);
             RegisterIncoming<ServerKeepAlivePacket>(0x1F);
             RegisterIncoming<ServerChunkDataPacket>(0x20);
             RegisterIncoming<ServerJoinGamePacket>(0x23);
             RegisterIncoming<ServerPlayerPositionRotationPacket>(0x2F);
+            RegisterIncoming<ServerRespawnPacket>(0x35);
+            RegisterIncoming<ServerPlayerHealthPacket>(0x41);
         }
         #endregion
         public void LoginToServer(SessionToken session)
@@ -162,7 +169,7 @@ namespace Cubecraft.Net.Protocol
                 }
                 catch(System.Net.Sockets.SocketException e)
                 {
-                    UnityEngine.Debug.LogError(e.Message);
+                    Debug.LogError(e.Message);
                     if(protocol != null)
                         protocol.Dispose();
                 }

@@ -44,19 +44,24 @@ public class NameBox : MonoBehaviour
     {
         if (waitForLogin)
         {
+            msgBox.SetActive(true);
             if (loginResult == ProtocolHandler.LoginResult.Success)
             {
                 Debug.Log("Login Success");
-                msgBox.SetActive(true);
-                //msgBox.GetComponent<MessageBox>().Show(ColorUtility.Set(ColorUtility.Green, "欢迎你，" + Global.sessionToken.selectedProfile.name));
+                msgBox.GetComponent<Text>().text = ColorUtility.Set(ColorUtility.Green, "欢迎你，" + Global.sessionToken.selectedProfile.name);
                 gameObject.SetActive(false);
             }
             else if(loginResult == ProtocolHandler.LoginResult.InvalidResponse)
             {
-                msgBox.SetActive(true);
-                //msgBox.GetComponent<MessageBox>().Show(ColorUtility.Set(ColorUtility.Red, "登录失败，请重试"));
+                msgBox.GetComponent<Text>().text = ColorUtility.Set(ColorUtility.Red, "登录失败，请重试");
             }
             waitForLogin = false;
+            Invoke("CloseMsgBox", 3);
         }
+    }
+    void CloseMsgBox()
+    {
+        msgBox.GetComponent<Text>().text = "";
+        msgBox.SetActive(false);
     }
 }

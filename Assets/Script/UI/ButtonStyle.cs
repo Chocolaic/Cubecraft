@@ -6,14 +6,22 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class ButtonStyle : MonoBehaviour
 {
+    [SerializeField]
+    public Sprite normalImg, activeImg;
+    public GameObject textObj;
+    public string normalFront, activeFront;
     Image btnImg;
     public void MouseEnter()
     {
-        btnImg.sprite = Resources.Load<Sprite>("Textures/UI/actbtn");
+        if (activeImg != null)
+            btnImg.sprite = activeImg;
+        textObj.GetComponent<Text>().text = activeFront;
     }
     public void MouseLeave()
     {
-        btnImg.sprite = Resources.Load<Sprite>("Textures/UI/norbtn");
+        if (normalImg != null)
+            btnImg.sprite = normalImg;
+        textObj.GetComponent<Text>().text = normalFront;
     }
     void Start()
     {

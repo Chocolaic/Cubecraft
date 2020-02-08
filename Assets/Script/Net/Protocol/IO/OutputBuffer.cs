@@ -68,6 +68,10 @@ namespace Cubecraft.Net.Protocol.IO
             WriteVarInt(array.Length);
             WriteData(array);
         }
+        public void WriteBool(bool b)
+        {
+            WriteByte((byte)(b ? 1 : 0));
+        }
         public Stream GetStream()
         {
             return this.s;

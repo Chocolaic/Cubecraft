@@ -10,10 +10,14 @@ namespace Cubecraft.Net.Protocol.Packets
     class ServerRespawnPacket : CubePacket
     {
         public int Dimension { get; private set; }
+        public int Difficulty { get; private set; }
+        public int GameMode { get; private set; }
 
         public override void Read(InputBuffer input)
         {
-            throw new NotImplementedException();
+            this.Dimension = input.ReadInt();
+            this.Difficulty = input.ReadByte();
+            this.GameMode = input.ReadByte();
         }
 
         public override void Write(OutputBuffer output)

@@ -51,25 +51,39 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
             {
                 OnConnectionLost(DisconnectReason.InGameKick, ((ServerDisconnectPacket)packet).RichText);
                 return;
-            }else if(packet.GetType() == typeof(ServerJoinGamePacket))
+            }else if (packet.GetType() == typeof(ServerJoinGamePacket))
             {
                 ServerJoinGamePacket joinGamePacket = (ServerJoinGamePacket)packet;
                 this.entityid = joinGamePacket.EntityID;
                 CubeProtocol.currentDimension = joinGamePacket.Dimension;
-            }else if(packet.GetType() == typeof(ServerChunkDataPacket))
+            }else if (packet.GetType() == typeof(ServerChunkDataPacket))
             {
                 mapManager.chunkQueue.Enqueue(((ServerChunkDataPacket)packet).Column);
             }
-            else if(packet.GetType() == typeof(ServerPlayerPositionRotationPacket))
+            else if (packet.GetType() == typeof(ServerPlayerPositionRotationPacket))
             {
                 gameManager.EndLoading();
                 ServerPlayerPositionRotationPacket positionAndLook = (ServerPlayerPositionRotationPacket)packet;
                 Debug.Log("X:" + positionAndLook.x + " Y:" + positionAndLook.y + " z:" + positionAndLook.z);
+                SendPacket(new ClientTeleportConfirmPacket(positionAndLook.TeleportID));
                 List<PositionField> posfield = positionAndLook.Relative;
                 mapManager.SetPlayerPosition(new Vector3(
                     (float)(posfield.Contains(PositionField.X) ? 0 : positionAndLook.x),
-                    (float)(posfield.Contains(PositionField.Y) ? 0 : positionAndLook.y) + 20f,
+                    (float)(posfield.Contains(PositionField.Y) ? 0 : positionAndLook.y),
                     (float)(posfield.Contains(PositionField.Z) ? 0 : positionAndLook.z)));
+            }else if (packet.GetType() == typeof(ServerPlayerHealthPacket))
+            {
+                if (((ServerPlayerHealthPacket)packet).Health == 0)
+                    SendPacket(new ClientRequestPacket(ClientRequest.Respawn));
+            }else if (packet.GetType() == typeof(ServerRespawnPacket))
+            {
+                Debug.Log("Clear Dimension");
+                mapManager.UnloadDimension();
+            }
+            else if (packet.GetType() == typeof(ServerUnloadChunkPacket))
+            {
+                ServerUnloadChunkPacket unloadChunkPacket = (ServerUnloadChunkPacket)packet;
+                mapManager.GetWorld().DestroyColumn(unloadChunkPacket.x, unloadChunkPacket.z);
             }
         }
     }
@@ -79,11 +93,10 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
         gameManager.ChatInputCompleted(text);
         SendPacket(new ClientChatPacket(text));
     }
-    private void SendPacket(Packet packet)
+    internal void SendPacket(Packet packet)
     {
         protocolHander.GetOutgoingQueue().Add(packet);
     }
-
     public void OnConnectionLost(DisconnectReason reason, string msg)
     {
         string alert = string.Empty;
@@ -93,12 +106,16 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
             case DisconnectReason.InGameKick: alert = "您被请出："; break;
             case DisconnectReason.LoginRejected: alert = "拒绝登录："; break;
         }
-        protocolHander.Dispose();
+        Disconnect();
         gameManager.InterruptGame(alert + msg);
     }
 
     public void OnGameJoined()
     {
         Debug.Log("LoginSuccess");
+    }
+    public void Disconnect()
+    {
+        protocolHander.Dispose();
     }
 }
