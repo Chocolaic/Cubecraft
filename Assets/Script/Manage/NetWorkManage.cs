@@ -69,7 +69,7 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
                 List<PositionField> posfield = positionAndLook.Relative;
                 mapManager.SetPlayerPosition(new Vector3(
                     (float)(posfield.Contains(PositionField.X) ? 0 : positionAndLook.x),
-                    (float)(posfield.Contains(PositionField.Y) ? 0 : positionAndLook.y),
+                    (float)(posfield.Contains(PositionField.Y) ? 0 : positionAndLook.y)+1,
                     (float)(posfield.Contains(PositionField.Z) ? 0 : positionAndLook.z)));
             }else if (packet.GetType() == typeof(ServerPlayerHealthPacket))
             {

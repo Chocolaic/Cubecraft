@@ -82,9 +82,14 @@
     <Compile Include="Assets\Script\Map\Block\Block.cs" />
     <Compile Include="Assets\Script\Map\Block\BlockMaterial.cs" />
     <Compile Include="Assets\Script\Map\Block\Instance\AirBlock.cs" />
+    <Compile Include="Assets\Script\Map\Block\Instance\CobbleStoneBlock.cs" />
     <Compile Include="Assets\Script\Map\Block\Instance\DirtBlock.cs" />
+    <Compile Include="Assets\Script\Map\Block\Instance\FlowerBlock.cs" />
     <Compile Include="Assets\Script\Map\Block\Instance\GrassBlock.cs" />
+    <Compile Include="Assets\Script\Map\Block\Instance\GravelBlock.cs" />
     <Compile Include="Assets\Script\Map\Block\Instance\LeavesBlock.cs" />
+    <Compile Include="Assets\Script\Map\Block\Instance\PlanksBlock.cs" />
+    <Compile Include="Assets\Script\Map\Block\Instance\PlantBlock.cs" />
     <Compile Include="Assets\Script\Map\Block\Instance\SandBlock.cs" />
     <Compile Include="Assets\Script\Map\Block\Instance\SlabBlock.cs" />
     <Compile Include="Assets\Script\Map\Block\Instance\StoneBlock.cs" />
@@ -169,6 +174,8 @@
     <Compile Include="Assets\Script\UI\NameBox.cs" />
     <Compile Include="Assets\Script\UI\ServerItem.cs" />
     <Compile Include="Assets\Script\UI\ServerList.cs" />
+    <Compile Include="Assets\Script\Utilities\Charactor\FirstPersonCamera.cs" />
+    <Compile Include="Assets\Script\Utilities\Charactor\FirstPersonController.cs" />
     <Compile Include="Assets\Script\Utilities\Charactor\ThirdPersonCamera.cs" />
     <Compile Include="Assets\Script\Utilities\Charactor\ThirdPersonController.cs" />
     <Compile Include="Assets\Script\Utilities\ChatParser.cs" />

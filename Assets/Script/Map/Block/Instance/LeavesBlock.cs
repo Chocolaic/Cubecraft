@@ -10,7 +10,7 @@ namespace Cubecraft.Data.World.Blocks
     {
         public override int BlockID { get { return 18; } }
 
-        public override bool Transparent { get { return false; } }
+        public override bool Transparent { get { return true; } }
         public override Tile TexturePosition(Direction direction)
         {
             Tile tile = new Tile();

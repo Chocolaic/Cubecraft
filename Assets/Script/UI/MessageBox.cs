@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class MessageBox : MonoBehaviour
 {
     [SerializeField]
-    public GameObject textObj, loadObj;
+    public GameObject textObj, loadObj, btnExitObj;
     public Sprite[] loadingFrames;
     private float interval;
     int pload;
@@ -16,15 +16,17 @@ public class MessageBox : MonoBehaviour
     void Update()
     {
         interval += Time.deltaTime;
-        if(interval > 0.3)
+        if(loadObj.active && interval > 0.3)
         {
             interval = 0;
             loadObj.GetComponent<Image>().sprite = loadingFrames[pload];
             pload = (pload + 1) % loadingFrames.Length;
         }
     }
-    public void ShowText(string text)
+    public void ShowText(string text, bool exitbtn)
     {
+        btnExitObj.SetActive(exitbtn);
+        loadObj.SetActive(!exitbtn);
         textObj.GetComponent<Text>().text = text;
     }
 }

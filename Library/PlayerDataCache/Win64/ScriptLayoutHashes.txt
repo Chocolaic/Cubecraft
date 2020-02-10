@@ -22,7 +22,7 @@ e1bbf0ab858085e38fae6b12ebbdcd35 UnityEngine.Timeline.dll:UnityEngine.Timeline.C
 e1bbf0ab858085e38fae6b12ebbdcd35 UnityEngine.Timeline.dll:UnityEngine.Timeline.GroupTrack
 e1bbf0ab858085e38fae6b12ebbdcd35 UnityEngine.Timeline.dll:UnityEngine.Timeline.PlayableTrack
 201e3fde670b00545944bb3db215c80a UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
-2be728e9351145244cf0f0fa74de66c8 Assembly-CSharp.dll:.MessageBox
+6587748252708726a78d68ccda76a662 Assembly-CSharp.dll:.MessageBox
 0d85f4fda1e0e70cd92c084d12f05cdc Assembly-CSharp.dll:UnityStandardAssets.Characters.ThirdPerson.AICharacterControl
 be8b29ecd05b56bbfb5cc0e39b16c11b Assembly-CSharp.dll:UnityStandardAssets.Characters.FirstPerson.FirstPersonController
 dbeec0876ba453fdc4209f9fa15da8b0 Assembly-CSharp.dll:.ThirdPersonController
@@ -210,3 +210,5 @@ c6666661329916e218bee7f5e79e60f5 Unity.TextMeshPro.dll:TMPro.TextMeshPro
 8649814970b42d345b89944b862453cc Unity.TextMeshPro.dll:TMPro.TMP_SubMesh
 346ae74b88b37db4802b6571c8675945 Assembly-CSharp.dll:.NameBox
 47cd05cf11ce8beb2fd9a1522f58f5ec Assembly-CSharp.dll:UnityStandardAssets.Utility.AutoMobileShaderSwitch
+166cfb521ff8d564d6504966098c1692 Assembly-CSharp.dll:.FirstPersonCamera
+4975dbd16ba822108d701fb5823475b6 Assembly-CSharp.dll:.FirstPersonController

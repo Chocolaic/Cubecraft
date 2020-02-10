@@ -30,7 +30,7 @@ public class MapManager : MonoBehaviour, IPlayerAction
         {
             this.player = Instantiate(playerPrefab);
             this.player.name = Global.sessionToken.selectedProfile.name;
-            this.player.GetComponent<ThirdPersonController>().action = this;
+            this.player.GetComponent<FirstPersonController>().action = this;
         }
         this.player.transform.position = pos;
     }

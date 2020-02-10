@@ -74,8 +74,9 @@ public class GameManager : MonoBehaviour
     public void InterruptGame(string text)
     {
         lockOperation = true;
+        Screen.lockCursor = false;
         msgBox.SetActive(true);
-        msgBox.GetComponent<MessageBox>().ShowText(text);
+        msgBox.GetComponent<MessageBox>().ShowText(text, true);
     }
     public void EndLoading()
     {

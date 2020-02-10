@@ -16,7 +16,7 @@ public abstract class Block
         Up,
         Down
     };
-    const float tileSize = 0.25f;
+    const float tileSize = 0.125f;
     public struct Tile { public int x; public int y; }
     public virtual Tile TexturePosition (Direction direction)
     {
@@ -27,6 +27,7 @@ public abstract class Block
     }
     public virtual void SetMeshVertical(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
+        meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x, y + 1, z)))
         {
             FaceDataUp(x, y, z, meshData);
@@ -40,6 +41,7 @@ public abstract class Block
 
     public virtual void SetMeshLeft(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
+        meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x - 1, y, z)))
         {
             FaceDataLeft(x, y, z, meshData);
@@ -47,6 +49,7 @@ public abstract class Block
     }
     public virtual void SetMeshRight(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
+        meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x + 1, y, z)))
         {
             FaceDataRight(x, y, z, meshData);
@@ -54,6 +57,7 @@ public abstract class Block
     }
     public virtual void SetMeshFront(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
+        meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x, y, z - 1)))
         {
             FaceDataBack(x, y, z, meshData);
@@ -61,6 +65,7 @@ public abstract class Block
     }
     public virtual void SetMeshBack(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
+        meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x, y, z + 1)))
         {
             FaceDataFront(x, y, z, meshData);

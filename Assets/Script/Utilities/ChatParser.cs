@@ -90,6 +90,10 @@ namespace Cubecraft.Utilities
                     {
                         return ColorUtility.Set(colorcode, JSONData2String(data.Properties["text"], colorcode, links) + extra_result);
                     }
+                    else if (data.Properties.ContainsKey("translate"))
+                    {
+                        return data.Properties["translate"].StringValue;
+                    }
                     else return extra_result;
 
                 case Json.JSONData.DataType.Array:
