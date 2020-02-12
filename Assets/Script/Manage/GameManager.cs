@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     bool _inputEnable;
     bool lockOperation = true;
     private bool menuactive = false;
+    private InputField inputField;
     bool MenuActive
     {
         get
@@ -31,7 +33,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        inputField = chatInput.GetComponent<InputField>();
     }
 
     // Update is called once per frame
@@ -39,10 +41,14 @@ public class GameManager : MonoBehaviour
     {
         if (!lockOperation)
         {
-            if (Input.GetKeyDown(KeyCode.T))
+            if (Input.GetKeyDown(KeyCode.T) && !_inputEnable)
             {
                 chatInput.SetActive(InputEnable);
+                inputField.ActivateInputField();
             }
+            else if (_inputEnable && !inputField.isFocused)
+                chatInput.SetActive(InputEnable);
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 menu.SetActive(MenuActive);
@@ -67,9 +73,7 @@ public class GameManager : MonoBehaviour
     }
     public void ChatInputCompleted(string text)
     {
-        AddChatText(text);
-        chatInput.GetComponent<InputField>().text = "";
-        chatInput.SetActive(InputEnable);
+        inputField.text = "";
     }
     public void InterruptGame(string text)
     {

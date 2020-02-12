@@ -23,6 +23,7 @@ namespace Cubecraft.Data.World
             else
                 return new GrassBlock();
         }
+        public static Block AIR { get; private set; }
 
         public void RegisterAll()
         {
@@ -38,6 +39,7 @@ namespace Cubecraft.Data.World
             RegisterBlock(18, new LeavesBlock());
             RegisterBlock(31, new PlantBlock());
             RegisterBlock(37, new FlowerBlock(37, 7, 0));
+            AIR = blockDic[0];
         }
     }
 }

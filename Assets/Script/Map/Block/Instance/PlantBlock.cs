@@ -12,7 +12,8 @@ namespace Cubecraft.Data.World.Blocks
         public override int BlockID { get { return 6; } }
 
         public override bool Transparent { get { return true; } }
-        public override void SetMeshVertical(Chunk chunk, int x, int y, int z, MeshData meshData) { }
+        public override void SetMeshUp(Chunk chunk, int x, int y, int z, MeshData meshData) { }
+        public override void SetMeshDown(Chunk chunk, int x, int y, int z, MeshData meshData) { }
         public override void SetMeshLeft(Chunk chunk, int x, int y, int z, MeshData meshData)
         {
             meshData.useRenderDataForCol = false;

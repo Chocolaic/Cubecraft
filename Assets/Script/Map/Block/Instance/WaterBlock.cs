@@ -13,16 +13,17 @@ namespace Cubecraft.Data.World.Blocks
 
         public override bool Transparent { get { return true; } }
 
-        public override void SetMeshVertical(Chunk chunk, int x, int y, int z, MeshData meshData)
+        public override void SetMeshUp(Chunk chunk, int x, int y, int z, MeshData meshData)
         {
             meshData.useRenderDataForCol = false;
-            BlockState upblock = chunk.GetBlock(x, y + 1, z);
-            if(upblock.ID == 0)
+            Block upblock = chunk.GetBlock(x, y + 1, z);
+            if(upblock.BlockID == 0)
             {
                 FaceDataUpSurface(x, y, z, meshData);
                 FaceDataDownSurface(x, y, z, meshData);
             }
         }
+        public override void SetMeshDown(Chunk chunk, int x, int y, int z, MeshData meshData) { }
         public override void SetMeshBack(Chunk chunk, int x, int y, int z, MeshData meshData) { }
         public override void SetMeshFront(Chunk chunk, int x, int y, int z, MeshData meshData) { }
         public override void SetMeshLeft(Chunk chunk, int x, int y, int z, MeshData meshData) { }

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 using Cubecraft.Data.World;
+using System.Threading;
+using System.Collections.Concurrent;
 
 public class World : MonoBehaviour
 {
@@ -9,12 +10,28 @@ public class World : MonoBehaviour
     public Dictionary<Vector2Int, Column> chunks = new Dictionary<Vector2Int, Column>();
     // chunk 预设体，用做创建对象的模板
     public GameObject columnPrefab;
-
+    private Thread calculateThread = null;
+    private bool onhandle;
     void Start()
     {
         Global.blockDic.RegisterAll();
+        onhandle = true;
+        //calculateThread = new Thread(() =>
+        //{
+        //    while (onhandle)
+        //    {
+        //        Chunk chunk = calculateQueue.Take();
+        //        chunk.LoadChunk();
+        //    }
+        //})
+        //{ IsBackground = true };
+        //calculateThread.Start();
     }
-
+    void OnDestroy()
+    {
+        onhandle = false;
+        //calculateThread.Abort();
+    }
     /// <summary>
     /// 创建 chunk
     /// </summary>

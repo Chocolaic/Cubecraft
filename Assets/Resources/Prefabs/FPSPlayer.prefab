@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5365653657093188539}
   - component: {fileID: 5365653657093188542}
-  - component: {fileID: 5365653657093188543}
   - component: {fileID: 6571903042272115984}
-  - component: {fileID: 5365653657093188529}
+  - component: {fileID: 5217124700588526359}
   m_Layer: 0
   m_Name: FPSPlayer
   m_TagString: Untagged
@@ -49,22 +48,6 @@ CapsuleCollider:
   m_Height: 1.2
   m_Direction: 1
   m_Center: {x: 0, y: 0.1, z: 0}
---- !u!114 &5365653657093188543
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5365653657093188528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6d9ad4630e32b04484a88891e841478, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mousespeed: 5
-  maxmouseY: 80
-  minmouseY: -80
-  agretctCamera: {fileID: 5365653658565225111}
 --- !u!143 &6571903042272115984
 CharacterController:
   m_ObjectHideFlags: 0
@@ -83,7 +66,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.1, z: 0}
---- !u!114 &5365653657093188529
+--- !u!114 &5217124700588526359
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,11 +75,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 5365653657093188528}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d46038a2ab37a6478db78109fd7e63d, type: 3}
+  m_Script: {fileID: 11500000, guid: c6d9ad4630e32b04484a88891e841478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 5
   jumpSpeed: 5
+  mousespeed: 5
+  maxmouseY: 90
+  minmouseY: -90
+  cameraObj: {fileID: 5365653658565225111}
 --- !u!1 &5365653658565225320
 GameObject:
   m_ObjectHideFlags: 0

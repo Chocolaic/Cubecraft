@@ -106,7 +106,10 @@ namespace Cubecraft.Net.Protocol
                     }
                 }
                 else
+                {
                     handler.OnConnectionLost(DisconnectReason.ConnectionLost, ColorUtility.Set(ColorUtility.Red, "与服务器断开连接"));
+                    return;
+                }
             }
 
             netRead = new System.Threading.Thread(() =>
@@ -120,7 +123,7 @@ namespace Cubecraft.Net.Protocol
                             SendPacket(new ClientKeepAlivePacket(((ServerKeepAlivePacket)packet).PingID));
                         else if (packet.GetType() == typeof(ServerDisconnectPacket))
                         {
-                            incomingQueue.Add(packet);
+                            handler.OnConnectionLost(DisconnectReason.InGameKick, ((ServerDisconnectPacket)packet).RichText);
                             return;
                         }
                         else
@@ -184,5 +187,11 @@ namespace Cubecraft.Net.Protocol
         {
             return this.outgoingQueue;
         }
+    }
+    struct ConnectionStatus
+    {
+        public bool connectionLostTrigger;
+        public DisconnectReason reason;
+        public string msg;
     }
 }

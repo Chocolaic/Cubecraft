@@ -18,18 +18,19 @@ public class Column : MonoBehaviour
         this.column = column;
         this.posX = x;
         this.posZ = z;
-        for(int chunkY = 0; chunkY < ChunkColumn.ColumnSize; chunkY++)
+        Chunk newChunk = null;
+        ChunkData chunk = null;
+        for (int chunkY = 0; chunkY < ChunkColumn.ColumnSize; chunkY++)
         {
             Vector3 worldPos = new Vector3(x * 16, chunkY * 16, z * 16);
-            ChunkData chunk = column[chunkY];
+            chunk = column[chunkY];
             size++;
             GameObject newChunkObject = Instantiate(chunkPrefab, worldPos, Quaternion.Euler(Vector3.zero));
             newChunkObject.transform.SetParent(gameObject.transform);
 
-            Chunk newChunk = newChunkObject.GetComponent<Chunk>();
+            newChunk = newChunkObject.GetComponent<Chunk>();
             newChunk.position = chunkY;
             newChunk.column = this;
-            newChunk.chunkData = chunk;
             chunks[chunkY] = newChunk;
             if (chunk != null)
             {
@@ -48,29 +49,7 @@ public class Column : MonoBehaviour
             newChunk.DoUpdate();
             yield return null;
         }
-    }
-    public BlockState GetBlock(int chunkPos, int blockX, int blockY, int blockZ)
-    {     
-        if (blockX < 0 || blockX > 15)
-        {
-            int offsetX = blockX % 15;
-            return world.GetColumn(posX + offsetX, posZ).GetBlock(chunkPos, blockX - offsetX * 16, blockY, blockZ);
-        }else if(blockZ < 0 || blockZ > 15)
-        {
-            int offsetZ = blockZ % 15;
-            return world.GetColumn(posX, posZ + offsetZ).GetBlock(chunkPos, blockX, blockY, blockZ - offsetZ * 16);
-        }
-        else if (blockY < 0 || blockY > 15)
-        {
-            int offsetY = blockY % 15;
-            return GetBlock(chunkPos + offsetY, blockX, blockY - offsetY * 16, blockZ);
-        }
-        else if (chunkPos < ChunkColumn.ColumnSize && chunkPos >= 0)
-        {
-            ChunkData targetChunk = column[chunkPos];
-            return targetChunk != null ? targetChunk[blockX, blockY, blockZ] : BlockStorage.AIR;
-        }
-        return BlockStorage.AIR;
+        System.GC.Collect();
     }
     public Chunk this[int index]
     {

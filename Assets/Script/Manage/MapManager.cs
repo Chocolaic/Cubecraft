@@ -1,17 +1,17 @@
-﻿using Cubecraft.Data.World;
+﻿using Chubecraft.Utilities;
+using Cubecraft.Data.World;
 using Cubecraft.Net.Protocol.Packets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapManager : MonoBehaviour, IPlayerAction
+public class MapManager : MonoBehaviour, IPlayerInteraction
 {
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private NetWorkManage netWorkManage;
     private GameObject player;
     public Queue<ChunkColumn> chunkQueue = new Queue<ChunkColumn>();
-    World world;
-    private bool playerSpawned;
+    public World world;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +30,7 @@ public class MapManager : MonoBehaviour, IPlayerAction
         {
             this.player = Instantiate(playerPrefab);
             this.player.name = Global.sessionToken.selectedProfile.name;
-            this.player.GetComponent<FirstPersonController>().action = this;
+            this.player.GetComponent<FirstPersonInteraction>().interact = this;
         }
         this.player.transform.position = pos;
     }
@@ -45,6 +45,31 @@ public class MapManager : MonoBehaviour, IPlayerAction
             Destroy(column);
         }
         world.chunks.Clear();
+    }
+    public void BreakSelectBlock(Chunk chunk, Vector3 pos)
+    {
+        int blockX = Utils.Round(pos.x) - chunk.column.posX * 16,
+            blockY = Utils.Round(pos.y) - chunk.position * 16,
+            blockZ = Utils.Round(pos.z) - chunk.column.posZ * 16;
+        Debug.Log("选中："+ blockX + " " + blockY + " " + blockZ);
+        //判断是否临界方块，否则更新临近区块
+        if(chunk.GetBlock(blockX, blockY, blockZ).BlockID != 0)
+        {
+            chunk.SetBlock(blockX, blockY, blockZ, BlockData.AIR);
+            if (blockX > 14 && chunk.RightChunk != null)
+                chunk.RightChunk.UpdateByBlockChange();
+            else if (blockX < 1 && chunk.LeftChunk != null)
+                chunk.LeftChunk.UpdateByBlockChange();
+            if (blockZ > 14 && chunk.BackChunk != null)
+                chunk.BackChunk.UpdateByBlockChange();
+            else if (blockZ < 1 && chunk.FrontChunk != null)
+                chunk.FrontChunk.UpdateByBlockChange();
+            if (blockY > 14 && chunk.UpChunk != null)
+                chunk.UpChunk.UpdateByBlockChange();
+            else if (blockY < 1 && chunk.DownChunk != null)
+                chunk.DownChunk.UpdateByBlockChange();
+            chunk.UpdateByBlockChange();
+        }
     }
     public World GetWorld()
     {

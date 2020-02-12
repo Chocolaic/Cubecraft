@@ -25,7 +25,7 @@ public abstract class Block
         tile.y = 0;
         return tile;
     }
-    public virtual void SetMeshVertical(Chunk chunk, int x, int y, int z, MeshData meshData)
+    public virtual void SetMeshUp(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
         meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x, y + 1, z)))
@@ -33,12 +33,15 @@ public abstract class Block
             FaceDataUp(x, y, z, meshData);
         }
 
+    }
+    public virtual void SetMeshDown(Chunk chunk, int x, int y, int z, MeshData meshData)
+    {
+        meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x, y - 1, z)))
         {
             FaceDataDown(x, y, z, meshData);
         }
     }
-
     public virtual void SetMeshLeft(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
         meshData.useRenderDataForCol = true;
@@ -60,7 +63,7 @@ public abstract class Block
         meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x, y, z - 1)))
         {
-            FaceDataBack(x, y, z, meshData);
+            FaceDataFront(x, y, z, meshData);
         }
     }
     public virtual void SetMeshBack(Chunk chunk, int x, int y, int z, MeshData meshData)
@@ -68,7 +71,7 @@ public abstract class Block
         meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x, y, z + 1)))
         {
-            FaceDataFront(x, y, z, meshData);
+            FaceDataBack(x, y, z, meshData);
         }
     }
     public static Vector2[] FaceUVs(Direction direction, Block block)
@@ -85,9 +88,9 @@ public abstract class Block
             tileSize * tilePos.y);
         return UVs;
     }
-    public static bool IsTransparent(BlockState state)
+    public static bool IsTransparent(Block block)
     {
-        return Global.blockDic.GetBlock(state.ID).Transparent;
+        return block.Transparent;
     }
 
     protected virtual MeshData FaceDataUp(int x, int y, int z, MeshData meshData)
@@ -117,7 +120,7 @@ public abstract class Block
         return meshData;
     }
 
-    protected virtual MeshData FaceDataFront(int x, int y, int z, MeshData meshData)
+    protected virtual MeshData FaceDataBack(int x, int y, int z, MeshData meshData)
     {
         meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
         meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
@@ -143,7 +146,7 @@ public abstract class Block
         return meshData;
     }
 
-    protected virtual MeshData FaceDataBack(int x, int y, int z, MeshData meshData)
+    protected virtual MeshData FaceDataFront(int x, int y, int z, MeshData meshData)
     {
         meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
         meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
@@ -167,5 +170,10 @@ public abstract class Block
         //Add the following line to every FaceData function with the direction of the face
         meshData.uv.AddRange(FaceUVs(Direction.Left, this));
         return meshData;
+    }
+    public override bool Equals(object obj)
+    {
+        Block block = null;
+        return (block = (Block)obj) != null ? this.BlockID == block.BlockID : false;
     }
 }

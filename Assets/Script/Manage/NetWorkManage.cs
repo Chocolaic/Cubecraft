@@ -12,6 +12,7 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
     CubeProtocol protocolHander;
     MapManager mapManager;
     GameManager gameManager;
+    ConnectionStatus connection;
     bool isWorking;
 
     int entityid;
@@ -28,7 +29,15 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
     public void StartWorking(string host, int port, int protocol)
     {
         isWorking = true;
-        protocolHander = new CubeProtocol(host, port, protocol, this);
+        try
+        {
+            protocolHander = new CubeProtocol(host, port, protocol, this);
+        }
+        catch(System.Exception e)
+        {
+            OnConnectionLost(DisconnectReason.ConnectionLost, ColorUtility.Set(ColorUtility.Red, e.Message));
+            return;
+        }
         protocolHander.LoginToServer(Global.sessionToken);
     }
 
@@ -37,6 +46,8 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
     {
         if(isWorking)
             HandlePacket();
+        else if (connection.connectionLostTrigger)
+            ConnectionLostHandle();
     }
     void HandlePacket()
     {
@@ -47,11 +58,7 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
             {
                 gameManager.AddChatText(((ServerChatPacket)packet).RichText);
             }
-            else if (packet.GetType() == typeof(ServerDisconnectPacket))
-            {
-                OnConnectionLost(DisconnectReason.InGameKick, ((ServerDisconnectPacket)packet).RichText);
-                return;
-            }else if (packet.GetType() == typeof(ServerJoinGamePacket))
+            else if (packet.GetType() == typeof(ServerJoinGamePacket))
             {
                 ServerJoinGamePacket joinGamePacket = (ServerJoinGamePacket)packet;
                 this.entityid = joinGamePacket.EntityID;
@@ -64,7 +71,7 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
             {
                 gameManager.EndLoading();
                 ServerPlayerPositionRotationPacket positionAndLook = (ServerPlayerPositionRotationPacket)packet;
-                Debug.Log("X:" + positionAndLook.x + " Y:" + positionAndLook.y + " z:" + positionAndLook.z);
+                //Debug.Log("X:" + positionAndLook.x + " Y:" + positionAndLook.y + " z:" + positionAndLook.z);
                 SendPacket(new ClientTeleportConfirmPacket(positionAndLook.TeleportID));
                 List<PositionField> posfield = positionAndLook.Relative;
                 mapManager.SetPlayerPosition(new Vector3(
@@ -99,15 +106,23 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
     }
     public void OnConnectionLost(DisconnectReason reason, string msg)
     {
+        this.isWorking = false;
+        Debug.Log("Connection Lost");
+        connection.connectionLostTrigger = true;
+        connection.reason = reason;
+        connection.msg = msg;
+    }
+    void ConnectionLostHandle()
+    {
         string alert = string.Empty;
-        switch (reason)
+        switch (connection.reason)
         {
             case DisconnectReason.ConnectionLost: alert = "连接丢失："; break;
             case DisconnectReason.InGameKick: alert = "您被请出："; break;
             case DisconnectReason.LoginRejected: alert = "拒绝登录："; break;
         }
         Disconnect();
-        gameManager.InterruptGame(alert + msg);
+        gameManager.InterruptGame(alert + connection.msg);
     }
 
     public void OnGameJoined()
@@ -116,6 +131,7 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
     }
     public void Disconnect()
     {
-        protocolHander.Dispose();
+        if(protocolHander != null)
+            protocolHander.Dispose();
     }
 }

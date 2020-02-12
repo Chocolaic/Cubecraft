@@ -75,7 +75,7 @@
     <Compile Include="Assets\Script\Data\World\PaletteMapping.cs" />
     <Compile Include="Assets\Script\Global.cs" />
     <Compile Include="Assets\Script\Manage\GameManager.cs" />
-    <Compile Include="Assets\Script\Manage\IPlayerAction.cs" />
+    <Compile Include="Assets\Script\Manage\IPlayerInteraction.cs" />
     <Compile Include="Assets\Script\Manage\MapManager.cs" />
     <Compile Include="Assets\Script\Manage\NetWorkManage.cs" />
     <Compile Include="Assets\Script\Manager.cs" />
@@ -174,10 +174,8 @@
     <Compile Include="Assets\Script\UI\NameBox.cs" />
     <Compile Include="Assets\Script\UI\ServerItem.cs" />
     <Compile Include="Assets\Script\UI\ServerList.cs" />
-    <Compile Include="Assets\Script\Utilities\Charactor\FirstPersonCamera.cs" />
-    <Compile Include="Assets\Script\Utilities\Charactor\FirstPersonController.cs" />
+    <Compile Include="Assets\Script\Utilities\Charactor\FirstPersonInteraction.cs" />
     <Compile Include="Assets\Script\Utilities\Charactor\ThirdPersonCamera.cs" />
-    <Compile Include="Assets\Script\Utilities\Charactor\ThirdPersonController.cs" />
     <Compile Include="Assets\Script\Utilities\ChatParser.cs" />
     <Compile Include="Assets\Script\Utilities\ColorUtility.cs" />
     <Compile Include="Assets\Script\Utilities\Json.cs" />
@@ -226,6 +224,7 @@
     <Compile Include="Assets\Script\Utilities\Standard Assets\Utility\TimedObjectDestructor.cs" />
     <Compile Include="Assets\Script\Utilities\Standard Assets\Utility\WaypointCircuit.cs" />
     <Compile Include="Assets\Script\Utilities\Standard Assets\Utility\WaypointProgressTracker.cs" />
+    <Compile Include="Assets\Script\Utilities\Utils.cs" />
     <None Include="Assets\Script\Utilities\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
     <None Include="Assets\Script\Utilities\Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
     <None Include="Assets\Script\Utilities\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
