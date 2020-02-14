@@ -8,6 +8,7 @@ public class World : MonoBehaviour
 {
     // 用来管理 chunk
     public Dictionary<Vector2Int, Column> chunks = new Dictionary<Vector2Int, Column>();
+    public BlockingCollection<Chunk> calculateQueue = new BlockingCollection<Chunk>(new ConcurrentQueue<Chunk>());
     // chunk 预设体，用做创建对象的模板
     public GameObject columnPrefab;
     private Thread calculateThread = null;
@@ -16,21 +17,22 @@ public class World : MonoBehaviour
     {
         Global.blockDic.RegisterAll();
         onhandle = true;
-        //calculateThread = new Thread(() =>
-        //{
-        //    while (onhandle)
-        //    {
-        //        Chunk chunk = calculateQueue.Take();
-        //        chunk.LoadChunk();
-        //    }
-        //})
-        //{ IsBackground = true };
-        //calculateThread.Start();
+        //单独线程来计算区块剔除面
+        calculateThread = new Thread(() =>
+        {
+            while (onhandle)
+            {
+                Chunk chunk = calculateQueue.Take();
+                chunk.UpdateChunk();
+            }
+        })
+        { IsBackground = true };
+        calculateThread.Start();
     }
     void OnDestroy()
     {
         onhandle = false;
-        //calculateThread.Abort();
+        calculateThread.Abort();
     }
     /// <summary>
     /// 创建 chunk

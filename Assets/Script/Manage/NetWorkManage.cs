@@ -74,13 +74,13 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
                 //Debug.Log("X:" + positionAndLook.x + " Y:" + positionAndLook.y + " z:" + positionAndLook.z);
                 SendPacket(new ClientTeleportConfirmPacket(positionAndLook.TeleportID));
                 List<PositionField> posfield = positionAndLook.Relative;
-                mapManager.SetPlayerPosition(new Vector3(
-                    (float)(posfield.Contains(PositionField.X) ? 0 : positionAndLook.x),
-                    (float)(posfield.Contains(PositionField.Y) ? 0 : positionAndLook.y)+1,
-                    (float)(posfield.Contains(PositionField.Z) ? 0 : positionAndLook.z)));
+                mapManager.SetPlayerPosition(new Vector3((float)positionAndLook.x, (float)positionAndLook.y, (float)positionAndLook.z));
             }else if (packet.GetType() == typeof(ServerPlayerHealthPacket))
             {
-                if (((ServerPlayerHealthPacket)packet).Health == 0)
+                ServerPlayerHealthPacket playerHealth = (ServerPlayerHealthPacket)packet;
+                gameManager.SetHealthValue(playerHealth.Health * 5);
+                gameManager.SetFoodValue(playerHealth.Food * 5);
+                if (playerHealth.Health <= 0)
                     SendPacket(new ClientRequestPacket(ClientRequest.Respawn));
             }else if (packet.GetType() == typeof(ServerRespawnPacket))
             {

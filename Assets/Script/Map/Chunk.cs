@@ -29,20 +29,14 @@ public class Chunk : MonoBehaviour
     public Chunk UpChunk { get; set; }
     public Chunk DownChunk { get; set; }
     private bool[] updateComplete = new bool[5];
-    private bool update;
 
     void Awake()
     {
         filter = gameObject.GetComponent<MeshFilter>();
         coll = gameObject.GetComponent<MeshCollider>();
     }
-    void Update()
+    void LateUpdate()
     {
-        if (update)
-        {
-            update = false;
-            UpdateChunk();
-        }
         if (updateComplete[0] && updateComplete[1] && updateComplete[2] && updateComplete[3] && updateComplete[4])
         {
             RenderMesh();
@@ -52,10 +46,6 @@ public class Chunk : MonoBehaviour
             updateComplete[3] = false;
             updateComplete[4] = false;
         }
-    }
-    public void DoUpdate()
-    {
-        update = true;
     }
     public Block this[int x, int y, int z]
     {
@@ -82,13 +72,28 @@ public class Chunk : MonoBehaviour
         meshData = new MeshData();
         Column targetColumn = null; Chunk targetChunk = null;
 
-        if (position > 0 && (targetChunk = column[position - 1]) != null)
+        if (position == 0)
+        {
+            UpdateDown();
+        }
+        else if ((targetChunk = column[position - 1]) != null)
         {
             targetChunk.UpChunk = this;
             this.DownChunk = targetChunk;
             targetChunk.UpdateUp();
+            UpdateDown();
         }
-        UpdateDown();
+        if (position == 15)
+        {
+            UpdateUp();
+        }
+        else if ((targetChunk = column[position + 1]) != null)
+        {
+            targetChunk.DownChunk = this;
+            this.UpChunk = targetChunk;
+            targetChunk.UpdateDown();
+            UpdateUp();
+        }
         if ((targetColumn = column.world.GetColumn(column.posX + 1, column.posZ)) != null && (targetChunk = targetColumn[position]) != null)
         {
             targetChunk.LeftChunk = this;

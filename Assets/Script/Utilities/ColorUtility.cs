@@ -1,24 +1,24 @@
 ﻿class ColorUtility
 {
-    public const string Black = "<color=#000000>{0}</color>"; //黑色
-    public const string DarkBlue = "<color=#0000AA>{0}</color>";
-    public const string DarkGreen = "<color=#00AA00>{0}</color>";
-    public const string DarkAqua = "<color=#00AAAA>{0}</color>";
-    public const string DarkRed = "<color=#AA0000>{0}</color>";
-    public const string DarkPurple = "<color=#AA00AA>{0}</color>";
-    public const string Gold = "<color=#FFAA00>{0}</color>";
-    public const string Gray = "<color=#AAAAAA>{0}</color>";
-    public const string DarkGray = "<color=#555555>{0}</color>";
-    public const string Blue = "<color=#5555FF>{0}</color>";
-    public const string Green = "<color=#55FF55>{0}</color>";
-    public const string Aqua = "<color=#55FFFF>{0}</color>";
-    public const string Red = "<color=#FF5555>{0}</color>";
-    public const string LightPurple = "<color=#FF55FF>{0}</color>";
-    public const string Yellow = "<color=#FFFF55>{0}</color>";
-    public const string White = "<color=#FFFFFF>{0}</color>";
+    public const string Black = "000000"; //黑色
+    public const string DarkBlue = "0000AA";
+    public const string DarkGreen = "00AA00";
+    public const string DarkAqua = "00AAAA";
+    public const string DarkRed = "AA0000";
+    public const string DarkPurple = "AA00AA";
+    public const string Gold = "FFAA00";
+    public const string Gray = "AAAAAA";
+    public const string DarkGray = "555555";
+    public const string Blue = "5555FF";
+    public const string Green = "55FF55";
+    public const string Aqua = "55FFFF";
+    public const string Red = "FF5555";
+    public const string LightPurple = "FF55FF";
+    public const string Yellow = "FFFF55";
+    public const string White = "FFFFFF";
 
-    public static string Set(string code, string text)
+    public static string Set(string code, object text)
     {
-        return string.IsNullOrEmpty(code) ? text : string.Format(code, text);
+        return string.IsNullOrEmpty(code) ? text.ToString() : string.Format("<color=#{0}>{1}</color>", code, text.ToString());
     }
 }

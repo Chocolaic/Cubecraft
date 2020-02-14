@@ -39,6 +39,7 @@ namespace Cubecraft.Data.World
             RegisterBlock(18, new LeavesBlock());
             RegisterBlock(31, new PlantBlock());
             RegisterBlock(37, new FlowerBlock(37, 7, 0));
+            RegisterBlock(78, new SnowLayerBlock());
             AIR = blockDic[0];
         }
     }

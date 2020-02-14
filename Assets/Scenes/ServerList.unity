@@ -559,7 +559,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalImg: {fileID: 0}
   activeImg: {fileID: 0}
-  textObj: {fileID: 1312172441}
+  textCom: {fileID: 1312172443}
+  normalTextSize: 30
+  activeTextSize: 30
   normalFront: "\u6DFB\u52A0\u670D\u52A1\u5668"
   activeFront: "<color=#ffffff>\u6DFB\u52A0\u670D\u52A1\u5668</color>"
 --- !u!114 &319743201
@@ -2632,7 +2634,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.74509805, g: 0.74509805, b: 0.74509805, a: 1}
+    m_HighlightedColor: {r: 0.5019608, g: 0.5019608, b: 0.4117647, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -2715,9 +2717,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalImg: {fileID: 0}
   activeImg: {fileID: 0}
-  textObj: {fileID: 2015645191}
+  textCom: {fileID: 2015645193}
+  normalTextSize: 30
+  activeTextSize: 30
   normalFront: "\u8FD4\u56DE"
-  activeFront: "<color=#808069>\u8FD4\u56DE</color>"
+  activeFront: "<color=#ffffff>\u8FD4\u56DE</color>"
 --- !u!114 &1778999139
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,20 +8,23 @@ public class ButtonStyle : MonoBehaviour
 {
     [SerializeField]
     public Sprite normalImg, activeImg;
-    public GameObject textObj;
+    public Text textCom;
+    public int normalTextSize, activeTextSize;
     public string normalFront, activeFront;
     Image btnImg;
     public void MouseEnter()
     {
         if (activeImg != null)
             btnImg.sprite = activeImg;
-        textObj.GetComponent<Text>().text = activeFront;
+        textCom.text = activeFront;
+        textCom.fontSize = activeTextSize;
     }
     public void MouseLeave()
     {
         if (normalImg != null)
             btnImg.sprite = normalImg;
-        textObj.GetComponent<Text>().text = normalFront;
+        textCom.text = normalFront;
+        textCom.fontSize = normalTextSize;
     }
     void Start()
     {

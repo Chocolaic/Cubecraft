@@ -1032,7 +1032,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalImg: {fileID: 21300000, guid: c639470ee0dcc1e49a0848308040b28a, type: 3}
   activeImg: {fileID: 21300000, guid: 266351ce3742c9a418711673280a9ea9, type: 3}
-  textObj: {fileID: 595031981}
+  textCom: {fileID: 595031983}
+  normalTextSize: 36
+  activeTextSize: 38
   normalFront: <color=#4876FF>QUIT</color>
   activeFront: <color=#4876FF>QUIT</color>
 --- !u!114 &729043528
@@ -6884,7 +6886,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalImg: {fileID: 21300000, guid: c639470ee0dcc1e49a0848308040b28a, type: 3}
   activeImg: {fileID: 21300000, guid: 266351ce3742c9a418711673280a9ea9, type: 3}
-  textObj: {fileID: 124724040}
+  textCom: {fileID: 124724042}
+  normalTextSize: 36
+  activeTextSize: 38
   normalFront: <color=#4876FF>ONLINE GAME</color>
   activeFront: <color=#4876FF>ONLINE GAME</color>
 --- !u!114 &1871084843
@@ -7069,7 +7073,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalImg: {fileID: 21300000, guid: c639470ee0dcc1e49a0848308040b28a, type: 3}
   activeImg: {fileID: 21300000, guid: 266351ce3742c9a418711673280a9ea9, type: 3}
-  textObj: {fileID: 896758965}
+  textCom: {fileID: 896758967}
+  normalTextSize: 36
+  activeTextSize: 38
   normalFront: <color=#4876FF>START GAME</color>
   activeFront: <color=#4876FF>START GAME</color>
 --- !u!114 &2138207807

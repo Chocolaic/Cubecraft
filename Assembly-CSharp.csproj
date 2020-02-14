@@ -78,6 +78,7 @@
     <Compile Include="Assets\Script\Manage\IPlayerInteraction.cs" />
     <Compile Include="Assets\Script\Manage\MapManager.cs" />
     <Compile Include="Assets\Script\Manage\NetWorkManage.cs" />
+    <Compile Include="Assets\Script\Manage\TimeTransform.cs" />
     <Compile Include="Assets\Script\Manager.cs" />
     <Compile Include="Assets\Script\Map\Block\Block.cs" />
     <Compile Include="Assets\Script\Map\Block\BlockMaterial.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Assets\Script\Map\Block\Instance\PlantBlock.cs" />
     <Compile Include="Assets\Script\Map\Block\Instance\SandBlock.cs" />
     <Compile Include="Assets\Script\Map\Block\Instance\SlabBlock.cs" />
+    <Compile Include="Assets\Script\Map\Block\Instance\SnowLayerBlock.cs" />
     <Compile Include="Assets\Script\Map\Block\Instance\StoneBlock.cs" />
     <Compile Include="Assets\Script\Map\Block\Instance\WaterBlock.cs" />
     <Compile Include="Assets\Script\Map\Block\Instance\WoodBlock.cs" />

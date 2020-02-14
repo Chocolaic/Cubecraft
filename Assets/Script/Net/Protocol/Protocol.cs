@@ -44,7 +44,7 @@ namespace Cubecraft.Net.Protocol
         {
             this.incoming.Add(id, typeof(T));
         }
-        public void RegisterOutgoing<T>(int id)
+        public void RegisterOutgoing<T>(int id) where T : Packet
         {
             this.outgoing.Add(typeof(T), id);
         }

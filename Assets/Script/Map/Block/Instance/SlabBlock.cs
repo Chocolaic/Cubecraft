@@ -12,7 +12,7 @@ namespace Cubecraft.Data.World.Blocks
         public override int BlockID { get { return 44; } }
 
         public override bool Transparent { get { return true; } }
-        protected override MeshData FaceDataFront(int x, int y, int z, MeshData meshData)
+        protected override MeshData FaceDataBack(int x, int y, int z, MeshData meshData)
         {
             meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
             meshData.AddVertex(new Vector3(x + 0.5f, y, z + 0.5f));
@@ -23,7 +23,7 @@ namespace Cubecraft.Data.World.Blocks
             meshData.uv.AddRange(FaceUVs(Direction.Front, this));
             return meshData;
         }
-        protected override MeshData FaceDataBack(int x, int y, int z, MeshData meshData)
+        protected override MeshData FaceDataFront(int x, int y, int z, MeshData meshData)
         {
             meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
             meshData.AddVertex(new Vector3(x - 0.5f, y, z - 0.5f));

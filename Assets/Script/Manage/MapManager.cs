@@ -10,8 +10,9 @@ public class MapManager : MonoBehaviour, IPlayerInteraction
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private NetWorkManage netWorkManage;
     private GameObject player;
+    private FirstPersonInteraction playerInteraction;
     public Queue<ChunkColumn> chunkQueue = new Queue<ChunkColumn>();
-    public World world;
+    private World world;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,9 +31,9 @@ public class MapManager : MonoBehaviour, IPlayerInteraction
         {
             this.player = Instantiate(playerPrefab);
             this.player.name = Global.sessionToken.selectedProfile.name;
-            this.player.GetComponent<FirstPersonInteraction>().interact = this;
+            (playerInteraction = this.player.GetComponent<FirstPersonInteraction>()).interact = this;
         }
-        this.player.transform.position = pos;
+        playerInteraction.Move(pos);
     }
     public void UpdatePosition(bool onGround, float x, float y, float z)
     {

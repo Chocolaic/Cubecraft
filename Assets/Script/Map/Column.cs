@@ -11,11 +11,8 @@ public class Column : MonoBehaviour
     public GameObject chunkPrefab;
     public World world;
     public int posX, posZ;
-
-    private ChunkColumn column;
     public IEnumerator CreateColumn(int x, int z, ChunkColumn column)
     {
-        this.column = column;
         this.posX = x;
         this.posZ = z;
         Chunk newChunk = null;
@@ -46,7 +43,7 @@ public class Column : MonoBehaviour
                     }
                 }
             }
-            newChunk.DoUpdate();
+            world.calculateQueue.Add(newChunk);
             yield return null;
         }
         System.GC.Collect();

@@ -11,14 +11,19 @@ public class GameManager : MonoBehaviour
     public GameObject chatBoxContent;
     public ScrollRect chatBox;
     public GameObject chatBoxText;
-    public GameObject chatInput;
+    public InputField chatInput;
     public GameObject menu;
+    public GameObject elements;
+
+    public Image circleHealth;
+    public Image circleFood;
+    public Text foodValue;
+    public Text healthValue;
     List<GameObject> chatList = new List<GameObject>();
 
     bool _inputEnable;
     bool lockOperation = true;
     private bool menuactive = false;
-    private InputField inputField;
     bool MenuActive
     {
         get
@@ -30,11 +35,6 @@ public class GameManager : MonoBehaviour
         {
             _inputEnable = !_inputEnable; return _inputEnable;
         } }
-    // Start is called before the first frame update
-    void Start()
-    {
-        inputField = chatInput.GetComponent<InputField>();
-    }
 
     // Update is called once per frame
     void Update()
@@ -43,11 +43,11 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.T) && !_inputEnable)
             {
-                chatInput.SetActive(InputEnable);
-                inputField.ActivateInputField();
+                chatInput.gameObject.SetActive(InputEnable);
+                chatInput.ActivateInputField();
             }
-            else if (_inputEnable && !inputField.isFocused)
-                chatInput.SetActive(InputEnable);
+            else if (_inputEnable && !chatInput.isFocused)
+                chatInput.gameObject.SetActive(InputEnable);
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -73,12 +73,12 @@ public class GameManager : MonoBehaviour
     }
     public void ChatInputCompleted(string text)
     {
-        inputField.text = "";
+        chatInput.text = "";
     }
     public void InterruptGame(string text)
     {
+        HideAllElements();
         lockOperation = true;
-        Screen.lockCursor = false;
         msgBox.SetActive(true);
         msgBox.GetComponent<MessageBox>().ShowText(text, true);
     }
@@ -86,5 +86,30 @@ public class GameManager : MonoBehaviour
     {
         lockOperation = false;
         msgBox.SetActive(false);
+        ShowAllElements();
+    }
+    public void HideAllElements()
+    {
+        elements.SetActive(false);
+        Screen.lockCursor = false;
+    }
+    public void ShowAllElements()
+    {
+        elements.SetActive(true);
+    }
+    public void SetHealthValue(float point)
+    {
+        if(point > 60)
+            healthValue.text = ColorUtility.Set(ColorUtility.Green, "HP" + point);
+        else if(point > 30)
+            healthValue.text = ColorUtility.Set(ColorUtility.Yellow, "HP" + point);
+        else
+            healthValue.text = ColorUtility.Set(ColorUtility.Red, "HP" + point);
+        circleHealth.fillAmount = point / 100;
+    }
+    public void SetFoodValue(float point)
+    {
+        foodValue.text = ColorUtility.Set(ColorUtility.Aqua, "FOOD" + point);
+        circleFood.fillAmount = point / 100;
     }
 }

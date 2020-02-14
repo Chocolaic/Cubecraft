@@ -20,6 +20,7 @@ public class FirstPersonInteraction : MonoBehaviour
     Vector3 sight = new Vector3(Screen.width / 2.0f, Screen.height / 2.0f, 0.0f);
     CharacterController controller;
     Vector3 direction = Vector3.zero;
+    Vector3 recordPosition;
 
     LayerMask chunklayer;
     // Start is called before the first frame update
@@ -87,5 +88,20 @@ public class FirstPersonInteraction : MonoBehaviour
             interact.BreakSelectBlock(chunk, pos);
             Debug.Log("Selected X:" + pos.x + " Y:" + pos.y + " Z:" + pos.z);
         }
+    }
+    void ReplaceAndUseBlock()
+    {
+        RaycastHit hit;
+        Ray ray = fpscamera.ScreenPointToRay(sight);
+        if (Physics.Raycast(ray, out hit, 5, chunklayer))
+        {
+            Vector3 pos = hit.point + (hit.normal.normalized * 0.5f);
+            Chunk chunk = hit.transform.GetComponent<Chunk>();
+        }
+    }
+    public void Move(Vector3 position)
+    {
+        transform.position = position;
+        recordPosition = position;
     }
 }
