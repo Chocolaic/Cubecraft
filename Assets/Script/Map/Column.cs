@@ -11,16 +11,15 @@ public class Column : MonoBehaviour
     public GameObject chunkPrefab;
     public World world;
     public int posX, posZ;
-    public IEnumerator CreateColumn(int x, int z, ChunkColumn column)
+    public IEnumerator CreateColumn(Vector2Int pos, ChunkColumn column)
     {
-        this.posX = x;
-        this.posZ = z;
+        this.posX = pos.x;
+        this.posZ = pos.y;
         Chunk newChunk = null;
-        ChunkData chunk = null;
         for (int chunkY = 0; chunkY < ChunkColumn.ColumnSize; chunkY++)
         {
-            Vector3 worldPos = new Vector3(x * 16, chunkY * 16, z * 16);
-            chunk = column[chunkY];
+            Vector3 worldPos = new Vector3(posX * 16, chunkY * 16, posZ * 16);
+            ChunkData chunk = column[chunkY];
             size++;
             GameObject newChunkObject = Instantiate(chunkPrefab, worldPos, Quaternion.Euler(Vector3.zero));
             newChunkObject.transform.SetParent(gameObject.transform);
@@ -28,25 +27,27 @@ public class Column : MonoBehaviour
             newChunk = newChunkObject.GetComponent<Chunk>();
             newChunk.position = chunkY;
             newChunk.column = this;
+            newChunk.chunkSize = 16;
+
+            InitializeBlocks(newChunk, chunk);
+
             chunks[chunkY] = newChunk;
-            if (chunk != null)
-            {
-                newChunk.chunkSize = 16;
-                for (int blockX = 0; blockX < newChunk.chunkSize; blockX++)
-                {
-                    for (int blockY = 0; blockY < newChunk.chunkSize; blockY++)
-                    {
-                        for (int blockZ = 0; blockZ < newChunk.chunkSize; blockZ++)
-                        {
-                            newChunk.SetBlock(blockX, blockY, blockZ, Global.blockDic.GetBlock(chunk[blockX, blockY, blockZ].ID));
-                        }
-                    }
-                }
-            }
             world.calculateQueue.Add(newChunk);
             yield return null;
         }
-        System.GC.Collect();
+    }
+    public void InitializeBlocks(Chunk newChunk, ChunkData chunk)
+    {
+        for (int blockX = 0; blockX < newChunk.chunkSize; blockX++)
+        {
+            for (int blockY = 0; blockY < newChunk.chunkSize; blockY++)
+            {
+                for (int blockZ = 0; blockZ < newChunk.chunkSize; blockZ++)
+                {
+                    newChunk.SetBlock(blockX, blockY, blockZ, chunk != null ? Global.blockDic.GetBlock(chunk[blockX, blockY, blockZ].ID) : BlockData.AIR);
+                }
+            }
+        }
     }
     public Chunk this[int index]
     {

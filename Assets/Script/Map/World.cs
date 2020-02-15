@@ -51,7 +51,7 @@ public class World : MonoBehaviour
         Column newColumn = newColumnObject.GetComponent<Column>();
         chunks.Add(dicpos, newColumn);
         newColumn.world = this;
-        StartCoroutine(newColumn.CreateColumn(column.ChunkX, column.ChunkZ, column));
+        StartCoroutine(newColumn.CreateColumn(dicpos, column));
     }
 
     /// <summary>

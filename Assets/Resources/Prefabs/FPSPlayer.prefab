@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5365653657093188539}
-  - component: {fileID: 5365653657093188542}
   - component: {fileID: 6571903042272115984}
   - component: {fileID: 5217124700588526359}
+  - component: {fileID: 3202271643790461922}
   m_Layer: 0
   m_Name: FPSPlayer
   m_TagString: Untagged
@@ -34,20 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &5365653657093188542
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5365653657093188528}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.4
-  m_Height: 1.2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!143 &6571903042272115984
 CharacterController:
   m_ObjectHideFlags: 0
@@ -84,6 +70,22 @@ MonoBehaviour:
   maxmouseY: 90
   minmouseY: -90
   cameraObj: {fileID: 5365653658565225111}
+--- !u!54 &3202271643790461922
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5365653657093188528}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5365653658565225320
 GameObject:
   m_ObjectHideFlags: 0

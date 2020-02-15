@@ -7,6 +7,7 @@ public abstract class Block
 {
     public abstract int BlockID { get; }
     public abstract bool Transparent { get; }
+    public static float offset = 0.001f;
     public enum Direction
     {
         Back,
@@ -78,14 +79,14 @@ public abstract class Block
     {
         Vector2[] UVs = new Vector2[4];
         Tile tilePos = block.TexturePosition(direction);
-        UVs[0] = new Vector2(tileSize * tilePos.x + tileSize,
-            tileSize * tilePos.y);
-        UVs[1] = new Vector2(tileSize * tilePos.x + tileSize,
-            tileSize * tilePos.y + tileSize);
-        UVs[2] = new Vector2(tileSize * tilePos.x,
-            tileSize * tilePos.y + tileSize);
-        UVs[3] = new Vector2(tileSize * tilePos.x,
-            tileSize * tilePos.y);
+        UVs[0] = new Vector2(tileSize * tilePos.x + tileSize - offset,
+            tileSize * tilePos.y + offset);
+        UVs[1] = new Vector2(tileSize * tilePos.x + tileSize - offset,
+            tileSize * tilePos.y + tileSize - offset);
+        UVs[2] = new Vector2(tileSize * tilePos.x + offset,
+            tileSize * tilePos.y + tileSize - offset);
+        UVs[3] = new Vector2(tileSize * tilePos.x + offset,
+            tileSize * tilePos.y + offset);
         return UVs;
     }
     public static bool IsTransparent(Block block)

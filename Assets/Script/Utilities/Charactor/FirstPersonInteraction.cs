@@ -104,4 +104,7 @@ public class FirstPersonInteraction : MonoBehaviour
         transform.position = position;
         recordPosition = position;
     }
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+    }
 }
