@@ -64,8 +64,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6d9ad4630e32b04484a88891e841478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 5
-  jumpSpeed: 5
+  walkSpeed: 4
+  jumpSpeed: 4
   mousespeed: 5
   maxmouseY: 90
   minmouseY: -90

@@ -10,24 +10,25 @@ namespace Cubecraft.Data.World.Blocks
     class WaterBlock : Block
     {
         public override int BlockID { get { return 9; } }
+        public override bool Solid { get { return false; } }
 
         public override bool Transparent { get { return true; } }
 
-        public override void SetMeshUp(Chunk chunk, int x, int y, int z, MeshData meshData)
+        public override void SetMeshUp(Chunk chunk, int x, int y, int z)
         {
-            meshData.useRenderDataForCol = false;
+            chunk.objectMeshData.useRenderDataForCol = false;
             Block upblock = chunk.GetBlock(x, y + 1, z);
             if(upblock.BlockID == 0)
             {
-                FaceDataUpSurface(x, y, z, meshData);
-                FaceDataDownSurface(x, y, z, meshData);
+                FaceDataUpSurface(x, y, z, chunk.objectMeshData);
+                FaceDataDownSurface(x, y, z, chunk.objectMeshData);
             }
         }
-        public override void SetMeshDown(Chunk chunk, int x, int y, int z, MeshData meshData) { }
-        public override void SetMeshBack(Chunk chunk, int x, int y, int z, MeshData meshData) { }
-        public override void SetMeshFront(Chunk chunk, int x, int y, int z, MeshData meshData) { }
-        public override void SetMeshLeft(Chunk chunk, int x, int y, int z, MeshData meshData) { }
-        public override void SetMeshRight(Chunk chunk, int x, int y, int z, MeshData meshData) { }
+        public override void SetMeshDown(Chunk chunk, int x, int y, int z) { }
+        public override void SetMeshBack(Chunk chunk, int x, int y, int z) { }
+        public override void SetMeshFront(Chunk chunk, int x, int y, int z) { }
+        public override void SetMeshLeft(Chunk chunk, int x, int y, int z) { }
+        public override void SetMeshRight(Chunk chunk, int x, int y, int z) { }
         private MeshData FaceDataFrontSurface(int x, int y, int z, MeshData meshData)
         {
             meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));

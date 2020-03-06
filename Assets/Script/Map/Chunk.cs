@@ -6,20 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-
-[RequireComponent(typeof(MeshFilter))]
-[RequireComponent(typeof(MeshRenderer))]
-[RequireComponent(typeof(MeshCollider))]
 public class Chunk : MonoBehaviour
 {
 
-    private Block[,,] blocks = new Block[16, 16, 16]; //用于存放数据块的方块的数据
-    public int chunkSize = 0;  //设置数据块的大小
+    private Block[,,] blocks = new Block[16, 16, 16];
+    public const int chunkSize = 16;
+    public MeshCollider coll, objcoll;
     private bool onload = false;  //一个标志位，用于判断该数据块是否已经更新
 
-    MeshFilter filter;
-    MeshCollider coll;
-    MeshData meshData = new MeshData();
+    public MeshFilter blockfilter, objectfilter;
+    public MeshData blockMeshData = new MeshData(), objectMeshData = new MeshData();
     public Column column;
     public int position;
     public int Size { get; private set; }
@@ -33,8 +29,12 @@ public class Chunk : MonoBehaviour
 
     void Awake()
     {
-        filter = gameObject.GetComponent<MeshFilter>();
-        coll = gameObject.GetComponent<MeshCollider>();
+        Transform a = transform.GetChild(0);
+        Transform b = transform.GetChild(1);
+        blockfilter = b.GetComponent<MeshFilter>();
+        objectfilter = a.GetComponent<MeshFilter>();
+        coll = b.GetComponent<MeshCollider>();
+        objcoll = a.GetComponent<MeshCollider>();
     }
     void LateUpdate()
     {
@@ -84,7 +84,7 @@ public class Chunk : MonoBehaviour
     /// </summary>
     public void UpdateChunk()
     {
-        meshData = new MeshData();
+        blockMeshData = new MeshData();
         Column targetColumn = null; Chunk targetChunk = null;
 
         if (position == 0)
@@ -140,7 +140,7 @@ public class Chunk : MonoBehaviour
     }
     public void UpdateByBlockChange()
     {
-        meshData = new MeshData();
+        blockMeshData = new MeshData();
         for (int x = 0; x < chunkSize; x++)
         {
             for (int y = 0; y < chunkSize; y++)
@@ -148,12 +148,12 @@ public class Chunk : MonoBehaviour
                 for (int z = 0; z < chunkSize; z++)
                 {
                     Block block = blocks[x, y, z];
-                    block.SetMeshUp(this, x, y, z, meshData);
-                    block.SetMeshDown(this, x, y, z, meshData);
-                    block.SetMeshFront(this, x, y, z, meshData);
-                    block.SetMeshBack(this, x, y, z, meshData);
-                    block.SetMeshLeft(this, x, y, z, meshData);
-                    block.SetMeshRight(this, x, y, z, meshData);
+                    block.SetMeshUp(this, x, y, z);
+                    block.SetMeshDown(this, x, y, z);
+                    block.SetMeshFront(this, x, y, z);
+                    block.SetMeshBack(this, x, y, z);
+                    block.SetMeshLeft(this, x, y, z);
+                    block.SetMeshRight(this, x, y, z);
                 }
             }
         }
@@ -169,7 +169,7 @@ public class Chunk : MonoBehaviour
                 {
                     for (int z = 0; z < chunkSize; z++)
                     {
-                        blocks[x, y, z].SetMeshUp(this, x, y, z, meshData);
+                        blocks[x, y, z].SetMeshUp(this, x, y, z);
                     }
                 }
             }
@@ -186,7 +186,7 @@ public class Chunk : MonoBehaviour
                 {
                     for (int z = 0; z < chunkSize; z++)
                     {
-                        blocks[x, y, z].SetMeshDown(this, x, y, z, meshData);
+                        blocks[x, y, z].SetMeshDown(this, x, y, z);
                     }
                 }
             }
@@ -204,7 +204,7 @@ public class Chunk : MonoBehaviour
                 {
                     for (int z = 0; z < chunkSize; z++)
                     {
-                        blocks[x, y, z].SetMeshLeft(this, x, y, z, meshData);
+                        blocks[x, y, z].SetMeshLeft(this, x, y, z);
                     }
                 }
             }
@@ -221,7 +221,7 @@ public class Chunk : MonoBehaviour
                 {
                     for (int z = 0; z < chunkSize; z++)
                     {
-                        blocks[x, y, z].SetMeshRight(this, x, y, z, meshData);
+                        blocks[x, y, z].SetMeshRight(this, x, y, z);
                     }
                 }
             }
@@ -238,7 +238,7 @@ public class Chunk : MonoBehaviour
                 {
                     for (int z = 0; z < chunkSize; z++)
                     {
-                        blocks[x, y, z].SetMeshFront(this, x, y, z, meshData);
+                        blocks[x, y, z].SetMeshFront(this, x, y, z);
                     }
                 }
             }
@@ -255,7 +255,7 @@ public class Chunk : MonoBehaviour
                 {
                     for (int z = 0; z < chunkSize; z++)
                     {
-                        blocks[x, y, z].SetMeshBack(this, x, y, z, meshData);
+                        blocks[x, y, z].SetMeshBack(this, x, y, z);
                     }
                 }
             }
@@ -268,20 +268,34 @@ public class Chunk : MonoBehaviour
     /// </summary>
     public void RenderMesh()
     {
-        filter.mesh.Clear();
-        filter.mesh.vertices = meshData.vertices.ToArray();
-        filter.mesh.triangles = meshData.triangles.ToArray();
+        blockfilter.mesh.Clear();
+        blockfilter.mesh.vertices = blockMeshData.vertices.ToArray();
+        blockfilter.mesh.triangles = blockMeshData.triangles.ToArray();
 
-        filter.mesh.uv = meshData.uv.ToArray();
-        filter.mesh.RecalculateNormals();
+        blockfilter.mesh.uv = blockMeshData.uv.ToArray();
+        blockfilter.mesh.RecalculateNormals();
 
+        objectfilter.mesh.Clear();
+        objectfilter.mesh.vertices = objectMeshData.vertices.ToArray();
+        objectfilter.mesh.triangles = objectMeshData.triangles.ToArray();
+
+        objectfilter.mesh.uv = objectMeshData.uv.ToArray();
+        objectfilter.mesh.RecalculateNormals();
         coll.sharedMesh = null;
         Mesh mesh = new Mesh();
-        mesh.vertices = meshData.colVertices.ToArray();
-        mesh.triangles = meshData.colTriangles.ToArray();
+        mesh.vertices = blockMeshData.colVertices.ToArray();
+        mesh.triangles = blockMeshData.colTriangles.ToArray();
         mesh.RecalculateNormals();
 
         coll.sharedMesh = mesh;
+
+        objcoll.sharedMesh = null;
+        Mesh objmesh = new Mesh();
+        objmesh.vertices = objectMeshData.colVertices.ToArray();
+        objmesh.triangles = objectMeshData.colTriangles.ToArray();
+        objmesh.RecalculateNormals();
+
+        objcoll.sharedMesh = mesh;
     }
     /// <summary>
     /// 用于获取对应位置的方块信息
@@ -325,7 +339,7 @@ public class Chunk : MonoBehaviour
         }
         else
         {
-            return (chunkSize != 0) ? this[x, y, z] : BlockData.AIR;
+            return (Size > 0) ? this[x, y, z] : BlockData.AIR;
         } 
         return BlockData.AIR;
     }

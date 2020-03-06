@@ -83,10 +83,10 @@ public class FirstPersonInteraction : MonoBehaviour
         Ray ray = fpscamera.ScreenPointToRay(sight);
         if (Physics.Raycast(ray, out hit, 5, chunklayer))
         {
-            Vector3 pos = hit.point + (ray.direction.normalized * 0.5f);
-            Chunk chunk = hit.transform.GetComponent<Chunk>();
-            interact.BreakSelectBlock(chunk, pos);
+            Vector3 pos = hit.point + (ray.direction.normalized * 0.25f); ;
+            Chunk chunk = hit.transform.GetComponentInParent<Chunk>();
             Debug.Log("Selected X:" + pos.x + " Y:" + pos.y + " Z:" + pos.z);
+            interact.BreakSelectBlock(chunk, pos);
         }
     }
     void ReplaceAndUseBlock()

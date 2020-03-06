@@ -12,38 +12,38 @@ namespace Cubecraft.Data.World.Blocks
         public override int BlockID { get { return 6; } }
 
         public override bool Transparent { get { return true; } }
-        public override void SetMeshUp(Chunk chunk, int x, int y, int z, MeshData meshData) { }
-        public override void SetMeshDown(Chunk chunk, int x, int y, int z, MeshData meshData) { }
-        public override void SetMeshLeft(Chunk chunk, int x, int y, int z, MeshData meshData)
+        public override void SetMeshUp(Chunk chunk, int x, int y, int z) { }
+        public override void SetMeshDown(Chunk chunk, int x, int y, int z) { }
+        public override void SetMeshLeft(Chunk chunk, int x, int y, int z)
         {
-            meshData.useRenderDataForCol = false;
+            chunk.objectMeshData.useRenderDataForCol = false;
             if (Block.IsTransparent(chunk.GetBlock(x - 1, y, z)))
             {
-                FaceDataLeft(x, y, z, meshData);
+                FaceDataLeft(x, y, z, chunk.objectMeshData);
             }
         }
-        public override void SetMeshRight(Chunk chunk, int x, int y, int z, MeshData meshData)
+        public override void SetMeshRight(Chunk chunk, int x, int y, int z)
         {
-            meshData.useRenderDataForCol = false;
+            chunk.objectMeshData.useRenderDataForCol = false;
             if (Block.IsTransparent(chunk.GetBlock(x + 1, y, z)))
             {
-                FaceDataRight(x, y, z, meshData);
+                FaceDataRight(x, y, z, chunk.objectMeshData);
             }
         }
-        public override void SetMeshFront(Chunk chunk, int x, int y, int z, MeshData meshData)
+        public override void SetMeshFront(Chunk chunk, int x, int y, int z)
         {
-            meshData.useRenderDataForCol = false;
+            chunk.objectMeshData.useRenderDataForCol = false;
             if (Block.IsTransparent(chunk.GetBlock(x, y, z - 1)))
             {
-                FaceDataBack(x, y, z, meshData);
+                FaceDataBack(x, y, z, chunk.objectMeshData);
             }
         }
-        public override void SetMeshBack(Chunk chunk, int x, int y, int z, MeshData meshData)
+        public override void SetMeshBack(Chunk chunk, int x, int y, int z)
         {
-            meshData.useRenderDataForCol = false;
+            chunk.objectMeshData.useRenderDataForCol = false;
             if (Block.IsTransparent(chunk.GetBlock(x, y, z + 1)))
             {
-                FaceDataFront(x, y, z, meshData);
+                FaceDataFront(x, y, z, chunk.objectMeshData);
             }
         }
         protected override MeshData FaceDataFront(int x, int y, int z, MeshData meshData)

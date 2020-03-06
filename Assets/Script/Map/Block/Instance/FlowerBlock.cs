@@ -9,6 +9,7 @@ namespace Cubecraft.Data.World.Blocks
     class FlowerBlock : PlantBlock
     {
         public override int BlockID { get { return id; } }
+        public override bool Solid { get { return false; } }
         private int id;
         private Tile tile;
         public FlowerBlock(int id, int textureX, int textureY)

@@ -7,6 +7,7 @@ public abstract class Block
 {
     public abstract int BlockID { get; }
     public abstract bool Transparent { get; }
+    public virtual bool Solid { get { return true; } }
     public static float offset = 0.001f;
     public enum Direction
     {
@@ -26,53 +27,101 @@ public abstract class Block
         tile.y = 0;
         return tile;
     }
-    public virtual void SetMeshUp(Chunk chunk, int x, int y, int z, MeshData meshData)
+    public virtual void SetMeshUp(Chunk chunk, int x, int y, int z)
     {
-        meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x, y + 1, z)))
         {
-            FaceDataUp(x, y, z, meshData);
+            if (Solid)
+            {
+                chunk.blockMeshData.useRenderDataForCol = true;
+                FaceDataUp(x, y, z, chunk.blockMeshData);
+            }
+            else
+            {
+                chunk.objectMeshData.useRenderDataForCol = true;
+                FaceDataUp(x, y, z, chunk.objectMeshData);
+            }
         }
 
     }
-    public virtual void SetMeshDown(Chunk chunk, int x, int y, int z, MeshData meshData)
+    public virtual void SetMeshDown(Chunk chunk, int x, int y, int z)
     {
-        meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x, y - 1, z)))
         {
-            FaceDataDown(x, y, z, meshData);
+            if (Solid)
+            {
+                chunk.blockMeshData.useRenderDataForCol = true;
+                FaceDataDown(x, y, z, chunk.blockMeshData);
+            }
+            else
+            {
+                chunk.objectMeshData.useRenderDataForCol = true;
+                FaceDataDown(x, y, z, chunk.objectMeshData);
+            }
         }
     }
-    public virtual void SetMeshLeft(Chunk chunk, int x, int y, int z, MeshData meshData)
+    public virtual void SetMeshLeft(Chunk chunk, int x, int y, int z)
     {
-        meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x - 1, y, z)))
         {
-            FaceDataLeft(x, y, z, meshData);
+            if (Solid)
+            {
+                chunk.blockMeshData.useRenderDataForCol = true;
+                FaceDataLeft(x, y, z, chunk.blockMeshData);
+            }
+            else
+            {
+                chunk.objectMeshData.useRenderDataForCol = true;
+                FaceDataLeft(x, y, z, chunk.objectMeshData);
+            }
         }
     }
-    public virtual void SetMeshRight(Chunk chunk, int x, int y, int z, MeshData meshData)
+    public virtual void SetMeshRight(Chunk chunk, int x, int y, int z)
     {
-        meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x + 1, y, z)))
         {
-            FaceDataRight(x, y, z, meshData);
+            if (Solid)
+            {
+                chunk.blockMeshData.useRenderDataForCol = true;
+                FaceDataRight(x, y, z, chunk.blockMeshData);
+            }
+            else
+            {
+                chunk.objectMeshData.useRenderDataForCol = true;
+                FaceDataRight(x, y, z, chunk.objectMeshData);
+            }
         }
     }
-    public virtual void SetMeshFront(Chunk chunk, int x, int y, int z, MeshData meshData)
+    public virtual void SetMeshFront(Chunk chunk, int x, int y, int z)
     {
-        meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x, y, z - 1)))
         {
-            FaceDataFront(x, y, z, meshData);
+            if (Solid)
+            {
+                chunk.blockMeshData.useRenderDataForCol = true;
+                FaceDataFront(x, y, z, chunk.blockMeshData);
+            }
+            else
+            {
+                chunk.objectMeshData.useRenderDataForCol = true;
+                FaceDataFront(x, y, z, chunk.objectMeshData);
+            }
         }
     }
-    public virtual void SetMeshBack(Chunk chunk, int x, int y, int z, MeshData meshData)
+    public virtual void SetMeshBack(Chunk chunk, int x, int y, int z)
     {
-        meshData.useRenderDataForCol = true;
         if (Block.IsTransparent(chunk.GetBlock(x, y, z + 1)))
         {
-            FaceDataBack(x, y, z, meshData);
+            if (Solid)
+            {
+                chunk.blockMeshData.useRenderDataForCol = true;
+                FaceDataBack(x, y, z, chunk.blockMeshData);
+            }
+            else
+            {
+                chunk.objectMeshData.useRenderDataForCol = true;
+                FaceDataBack(x, y, z, chunk.objectMeshData);
+            }
         }
     }
     public static Vector2[] FaceUVs(Direction direction, Block block)
@@ -176,5 +225,9 @@ public abstract class Block
     {
         Block block = null;
         return (block = (Block)obj) != null ? this.BlockID == block.BlockID : false;
+    }
+    public override int GetHashCode()
+    {
+        return this.BlockID;
     }
 }

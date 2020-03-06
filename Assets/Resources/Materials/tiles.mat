@@ -63,7 +63,7 @@ Material:
     m_Floats:
     - PixelSnap: 0
     - _BumpScale: 1
-    - _Cutoff: 0.15
+    - _Cutoff: 0.25
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnableExternalAlpha: 0

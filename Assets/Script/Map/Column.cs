@@ -27,7 +27,6 @@ public class Column : MonoBehaviour
             newChunk = newChunkObject.GetComponent<Chunk>();
             newChunk.position = chunkY;
             newChunk.column = this;
-            newChunk.chunkSize = 16;
 
             InitializeBlocks(newChunk, chunk);
 
@@ -36,13 +35,13 @@ public class Column : MonoBehaviour
             yield return null;
         }
     }
-    public void InitializeBlocks(Chunk newChunk, ChunkData chunk)
+    public static void InitializeBlocks(Chunk newChunk, ChunkData chunk)
     {
-        for (int blockX = 0; blockX < newChunk.chunkSize; blockX++)
+        for (int blockX = 0; blockX < Chunk.chunkSize; blockX++)
         {
-            for (int blockY = 0; blockY < newChunk.chunkSize; blockY++)
+            for (int blockY = 0; blockY < Chunk.chunkSize; blockY++)
             {
-                for (int blockZ = 0; blockZ < newChunk.chunkSize; blockZ++)
+                for (int blockZ = 0; blockZ < Chunk.chunkSize; blockZ++)
                 {
                     newChunk.SetBlock(blockX, blockY, blockZ, chunk != null ? Global.blockDic.GetBlock(chunk[blockX, blockY, blockZ].ID) : BlockData.AIR);
                 }

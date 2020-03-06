@@ -42,7 +42,7 @@ public class NetWorkManage : MonoBehaviour, INetworkHandler
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(isWorking)
             HandlePacket();

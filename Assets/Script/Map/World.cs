@@ -70,7 +70,7 @@ public class World : MonoBehaviour
         Column column = null;
         if (chunks.TryGetValue(pos, out column))
         {
-            Object.Destroy(column.gameObject);
+            Object.DestroyImmediate(column.gameObject);
             chunks.Remove(pos);
         }
     }
